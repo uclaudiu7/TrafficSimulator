@@ -1,0 +1,41 @@
+/* Choice Box */
+.choice-box{
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+.choice-box .label{
+    -fx-text-fill: #ffffff; /* text color */
+}
+
+.choice-box .menu-item{
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+/* Spinner */
+.spinner .text-field {
+    -fx-text-fill: #ffffff; /* text color */
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+/* Slider */
+.slider .thumb {
+    -fx-background-color: #2b2b2b; /* thumb color */
+}
+
+.slider .track {
+    -fx-background-color: #696969; /* track color */
+}
+
+#exitButton{
+    -fx-background-color: #2b2b2b; /* background color */
+    -fx-text-fill: #ffffff; /* text color */
+}
+
+#exitButton:hover{
+    -fx-background-color: #ffffff; /* background color */
+    -fx-text-fill: #2b2b2b; /* text color */
+}

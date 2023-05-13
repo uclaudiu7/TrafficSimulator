@@ -1,0 +1,27 @@
+#exitButton{
+    -fx-background-color: #2b2b2b; /* background color */
+    -fx-text-fill: #ffffff; /* text color */
+}
+
+#exitButton:hover{
+    -fx-background-color: #ffffff; /* background color */
+    -fx-text-fill: #2b2b2b; /* text color */
+}
+
+.choice-box{
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+.choice-box .label{
+    -fx-text-fill: #ffffff; /* text color */
+}
+
+.choice-box .menu-item{
+    -fx-background-color: #2b2b2b; /* background color */
+}
+
+#centerAnchorPane {
+    -fx-background-size: stretch;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
