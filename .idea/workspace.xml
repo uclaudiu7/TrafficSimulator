@@ -4,35 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/TrafficSimulator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/MainMenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/MainMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/main-menu.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/main-menu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/eminescu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/pasarela.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/uaic.png" afterDir="false" />
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="added traffic maps, fully working GUI">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/DatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/TrafficSimulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/TrafficSimulator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,19 +39,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/faculta/ProgrAvansata/TrafficSimulator/src",
-    "show.migrate.to.gradle.popup": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/faculta/ProgrAvansata/TrafficSimulator&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src" />
@@ -69,11 +70,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684020023538</updated>
-      <workItem from="1684020024114" duration="114000" />
+      <workItem from="1684020024114" duration="761000" />
+      <workItem from="1684059836758" duration="141000" />
+      <workItem from="1684065735163" duration="11759000" />
+      <workItem from="1684085986404" duration="6616000" />
+      <workItem from="1684163288621" duration="35000" />
+      <workItem from="1684165718781" duration="34000" />
+      <workItem from="1684165832568" duration="2318000" />
+      <workItem from="1684169938751" duration="791000" />
+      <workItem from="1684172572349" duration="28000" />
+      <workItem from="1684172627767" duration="3000" />
+      <workItem from="1684695476676" duration="363000" />
+      <workItem from="1684697079358" duration="2546000" />
     </task>
+    <task id="LOCAL-00001" summary="added traffic maps, fully working GUI">
+      <created>1684020251166</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1684020251166</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added traffic maps, fully working GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="added traffic maps, fully working GUI" />
   </component>
 </project>

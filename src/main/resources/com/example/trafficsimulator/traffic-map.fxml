@@ -46,6 +46,11 @@
                   <DropShadow />
                </effect>
             </Button>
+            <Button fx:id="loadButton" layoutX="182.0" layoutY="6.0" mnemonicParsing="false" onAction="#loadButtonAction" style="-fx-background-color: #444444;" text="load" textFill="WHITE">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
          </children>
       </AnchorPane>
    </bottom>
