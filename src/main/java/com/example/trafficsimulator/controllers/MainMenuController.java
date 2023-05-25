@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainMenuController {
         @FXML
@@ -58,7 +59,7 @@ public class MainMenuController {
                 stage.close();
         }
 
-        public void startButtonAction() throws IOException {
+        public void startButtonAction() throws IOException, SQLException {
                 System.out.println("Zone: " + zoneChoiceBox.getValue());
                 System.out.println("Cars: " + carsSpinner.getValue());
                 System.out.println("Intensity: " + intensitySlider.getValue());

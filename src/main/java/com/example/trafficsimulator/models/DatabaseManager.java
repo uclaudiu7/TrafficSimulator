@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 public class DatabaseManager {
@@ -136,5 +139,80 @@ public class DatabaseManager {
         return nodes;
     }
 
+    public List<Node> getCarPosition(String zone, int carNumber){
+        List<Node> nodes = new ArrayList<>();
+        String sql = null;
+        Random rand = new Random();
+        int upperbound = 255;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT x,y FROM nodes_uaic WHERE id = ?";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT x,y FROM nodes_pasarela WHERE id = ?";
+        } else {
+            sql = "SELECT x,y FROM nodes_eminescu WHERE id = ?";
+        }
+        for(int i=0;i<carNumber;i++)
+        {
+            try{
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, rand.nextInt(upperbound));
+                pstmt.executeQuery();
+                while(pstmt.getResultSet().next()){
+                    Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
+                    nodes.add(node);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return nodes;
+    }
+
+    public List<Node> getNodes(String zone) {
+        List<Node> nodes = new ArrayList<>();
+        String sql = null;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT * FROM nodes_uaic";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT * FROM nodes_pasarela";
+        } else {
+            sql = "SELECT * FROM nodes_eminescu";
+        }
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+            while(pstmt.getResultSet().next()){
+                Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
+                nodes.add(node);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nodes;
+    }
+
+    public List<Edge> getEdges(String zone) {
+        List<Edge> edges = new ArrayList<>();
+        String sql = null;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT * FROM edges_uaic";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT * FROM edges_pasarela";
+        } else {
+            sql = "SELECT * FROM edges_eminescu";
+        }
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+            while(pstmt.getResultSet().next()){
+                Edge edge = new Edge(pstmt.getResultSet().getDouble("x1"), pstmt.getResultSet().getDouble("y1"),
+                        pstmt.getResultSet().getDouble("x2"), pstmt.getResultSet().getDouble("y2"));
+                edges.add(edge);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return edges;
+    }
 }
 

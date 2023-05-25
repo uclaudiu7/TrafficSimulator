@@ -2,6 +2,7 @@ package com.example.trafficsimulator.controllers;
 
 import com.example.trafficsimulator.models.DatabaseManager;
 import com.example.trafficsimulator.models.Node;
+import com.example.trafficsimulator.scenes.TrafficMap;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -27,6 +28,8 @@ public class TrafficMapController {
     private Node node2;
     private int clickCount = 0;
 
+    private TrafficMap trafficMap;
+
     @FXML private AnchorPane topAnchorPane;
     @FXML private AnchorPane centerAnchorPane;
     @FXML private AnchorPane bottomAnchorPane;
@@ -46,11 +49,11 @@ public class TrafficMapController {
     @FXML
     private void initialize() {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        exitButton.setLayoutX(bounds.getWidth() - 30);
-        fiveSpeedButton.setLayoutX(bounds.getWidth() - 30);
+        exitButton.setLayoutX(1536 - 30);
+        fiveSpeedButton.setLayoutX(1536 - 30);
         twoSpeedButton.setLayoutX(fiveSpeedButton.getLayoutX() - 40);
         oneSpeedButton.setLayoutX(twoSpeedButton.getLayoutX() - 40);
-        mapNodesListener();
+        //mapNodesListener();
     }
 
     public void exitButtonAction() {
@@ -138,6 +141,19 @@ public class TrafficMapController {
         centerAnchorPane.getChildren().add(circle);
     }
 
+    public void drawCar(Node node){
+        if(node == null)
+            return;
+        Circle circle = new Circle(node.getX(), node.getY(), 5);
+        //generate a random color
+        String color = "#";
+        for(int i = 0; i < 6; i++){
+            color += Integer.toHexString((int)(Math.random() * 16));
+        }
+        circle.setStroke(Color.web(color));
+        centerAnchorPane.getChildren().add(circle);
+    }
+
     public void mapEdgesListener() {
         centerAnchorPane.setOnMouseClicked(event -> {
             clickCount++;
@@ -167,4 +183,7 @@ public class TrafficMapController {
         centerAnchorPane.getChildren().add(line);
     }
 
+    public void setTrafficMap(TrafficMap trafficMap) {
+        this.trafficMap = trafficMap;
+    }
 }

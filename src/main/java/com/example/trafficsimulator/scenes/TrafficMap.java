@@ -2,6 +2,7 @@ package com.example.trafficsimulator.scenes;
 
 import com.example.trafficsimulator.TrafficSimulator;
 import com.example.trafficsimulator.controllers.TrafficMapController;
+import com.example.trafficsimulator.models.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -9,9 +10,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 public class TrafficMap {
+
+    private TrafficMapController trafficMapController;
     private final Stage stage;
     private final Scene scene;
     private final String zone;
@@ -19,7 +24,9 @@ public class TrafficMap {
     private final double intensity;
     private final double hazard;
 
-    public TrafficMap(Stage stage, String zone, int cars, double intensity, double hazard) throws IOException {
+    private Simulation simulation;
+
+    public TrafficMap(Stage stage, String zone, int cars, double intensity, double hazard) throws IOException, SQLException {
         this.stage = stage;
         this.cars = cars;
         this.intensity = intensity;
@@ -27,8 +34,8 @@ public class TrafficMap {
         this.zone = zone;
 
         FXMLLoader fxmlLoader = new FXMLLoader(TrafficSimulator.class.getResource("traffic-map.fxml"));
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        scene = new Scene(fxmlLoader.load(), screenBounds.getWidth(), screenBounds.getHeight());
+        //Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        scene = new Scene(fxmlLoader.load(), 1536, 864);
         scene.getStylesheets().add(Objects.requireNonNull(TrafficSimulator.class.getResource("traffic-map.css")).toExternalForm());
         stage.setTitle(zone + " Traffic Map");
 
@@ -42,6 +49,8 @@ public class TrafficMap {
         controller.setHazardLabel("Hazard probability: " + oneDecimalHazard + "%");
         controller.setMap(zone);
 
+        trafficMapController = fxmlLoader.getController();
+        trafficMapController.setTrafficMap(this);
         beginSimulation();
     }
 
@@ -50,8 +59,23 @@ public class TrafficMap {
         stage.show();
     }
 
-    private void beginSimulation() {
-        //TODO: Implement
+    private void beginSimulation() throws SQLException {
+        simulation = new Simulation(zone, cars, intensity, hazard);
+        //simulation.generateCars(zone);
+        List<Car> carList = simulation.generateCars(zone);
+        List<Node> nodeList = simulation.generateNodes(zone);
+        List<Edge> edgeList = simulation.generateEdges(zone);
+
+        Graph graph = new Graph(nodeList, edgeList, carList);
+
+        graph.createGraph();
+        graph.printGraph();
+
+        for(Car car : carList){
+            trafficMapController.drawCar(car.getPosition());
+        }
     }
+
+
 
 }
