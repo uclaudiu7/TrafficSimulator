@@ -2,70 +2,92 @@ package com.example.trafficsimulator.models;
 
 import com.example.trafficsimulator.scenes.TrafficMap;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Simulation {
     private final TrafficMap trafficMap;
-    private DatabaseManager dbManager = new DatabaseManager();
-    private String zone;
-    private int cars;
-    private double intensity;
-    private double hazard;
-    private Car car;
-    private Node node;
+    private final String zone;
+    private final int numberOfCars;
+    private final double intensity;
+    private final double hazard;
     private int[][] map;
+    private final Graph graph;
+    private final List<Node> nodes;
+    private final List<Edge> edges;
+    private List<Car> cars;
 
-    private Graph graph;
-
-    public Simulation(String zone, int cars, double intensity, double hazard, TrafficMap trafficMap) {
+    public Simulation(String zone, int numberOfCars, double intensity, double hazard, TrafficMap trafficMap) {
         this.zone = zone;
-        this.cars = cars;
+        this.numberOfCars = numberOfCars;
         this.intensity = intensity;
         this.hazard = hazard;
         this.trafficMap = trafficMap;
+        nodes = trafficMap.getTrafficMapController().getNodes();
+        edges = trafficMap.getTrafficMapController().getEdges();
+        graph = new Graph(nodes, edges, cars);
+        setNeighbours();
+        setReachableNodes();
+        cars = generateCars();
     }
 
+    public void setNeighbours(){
+        for(Edge edge : edges){
+            Node start = edge.getStart();
+            Node end = edge.getEnd();
 
-    public List<Car> generateCars() throws SQLException {
-        List<Node> carLocation = dbManager.getCarPosition(zone, cars);
+            int index1 = nodes.indexOf(start);
+            int index2 = nodes.indexOf(end);
+
+            nodes.get(index1).addNeighbour(nodes.get(index2));
+        }
+    }
+
+    public void setReachableNodes(){
+        for(Node node : nodes){
+            node.addReachableNodes(node, node);
+        }
+        graph.setNodes(nodes);
+    }
+
+    public List<Car> generateCars() {
         List<Car> carList = new ArrayList<>();
-        List<Node> destination = dbManager.getNodes(zone);
         Random random = new Random();
-        int upperbound = destination.size()-1;
-        for(int i = 0;i<cars;i++){
-            car = new Car("Car"+i,carLocation.get(i),destination.get(random.nextInt(upperbound)));
+        int upperbound = nodes.size()-1;
+
+        for(int i = 0; i < numberOfCars; i++){
+            int index = random.nextInt(upperbound);
+            Node start = nodes.get(index);
+
+            List<Node> reachableNodes = start.getReachableNodes();
+            int index2 = random.nextInt(reachableNodes.size()-1);
+            Node end = reachableNodes.get(index2);
+
+            Car car = new Car("Car " + i, start, end);
             carList.add(car);
         }
-        //carList.forEach(car1 -> System.out.println(car1.getName() + " " + car1.getPosition() + " " + car1.getDestination()));
+
         return carList;
     }
 
-    public List<Node> generateNodes() throws SQLException {
-        //nodeList.forEach(node1 -> System.out.println(node1.getName() + " " + node1.getPosition()));
-        return dbManager.getNodes(zone);
+    public void start(){
+        for(Car car : cars){
+            System.out.println("Car " + car.getName() + " is moving from " + car.getStart() + " to " + car.getDestination());
+            List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
+            drawPath(path, car);
+        }
     }
 
-    public List<Edge> generateEdges() throws SQLException {
-        //edgeList.forEach(edge1 -> System.out.println(edge1.getName() + " " + edge1.getFrom() + " " + edge1.getTo()));
-        return dbManager.getEdges(zone);
-    }
-    public void moveCar(Car car){
-        Random random  = new Random();
-        List<Node> nodeList = dbManager.getNodes(zone);
-        int upperbound = nodeList.size()-1;
-
-        int index = random.nextInt(upperbound);
-
-        int index2 = random.nextInt(upperbound);
-        Node node = nodeList.get(index);
-        Node node2 = nodeList.get(index2);
-
-        car.setPosition(node);
-
-        trafficMap.updateCarPosition(car, node);
-        trafficMap.updateCarPosition(car, node2);
+    public void drawPath(List<Node> path, Car car){
+        for(Node node : path){
+            if(node == path.get(0)){
+                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "start");
+            } else if(node == path.get(path.size()-1)){
+                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "end");
+            } else{
+                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "mid");
+            }
+        }
     }
 }

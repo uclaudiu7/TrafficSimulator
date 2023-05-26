@@ -2,6 +2,7 @@ package com.example.trafficsimulator.controllers;
 
 import com.example.trafficsimulator.models.Car;
 import com.example.trafficsimulator.models.DatabaseManager;
+import com.example.trafficsimulator.models.Edge;
 import com.example.trafficsimulator.models.Node;
 import com.example.trafficsimulator.scenes.TrafficMap;
 import javafx.fxml.FXML;
@@ -17,9 +18,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.HexFormat;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 
 public class TrafficMapController {
     private String zone;
@@ -31,9 +30,7 @@ public class TrafficMapController {
 
     private TrafficMap trafficMap;
 
-    @FXML private AnchorPane topAnchorPane;
     @FXML private AnchorPane centerAnchorPane;
-    @FXML private AnchorPane bottomAnchorPane;
 
     @FXML private Label zoneLabel;
     @FXML private Label carsLabel;
@@ -49,7 +46,7 @@ public class TrafficMapController {
 
     @FXML
     private void initialize() {
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        //Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         exitButton.setLayoutX(1536 - 30);
         fiveSpeedButton.setLayoutX(1536 - 30);
         twoSpeedButton.setLayoutX(fiveSpeedButton.getLayoutX() - 40);
@@ -85,6 +82,7 @@ public class TrafficMapController {
 
     public void oneSpeedButtonAction() {
         //TODO: Implement
+        closestNodeListener();
         //mapNodesListener();
     }
 
@@ -125,6 +123,18 @@ public class TrafficMapController {
         centerAnchorPane.setStyle("-fx-background-image: url('" + background.getUrl() + "'); ");
     }
 
+    public void closestNodeListener(){
+        centerAnchorPane.setOnMouseClicked(event -> {
+            Node temp = new Node(event.getX(), event.getY());
+            Node closest = nodes.get(0);
+            for(Node node : nodes) {
+                if(node.distanceTo(temp) < closest.distanceTo(temp))
+                    closest = node;
+            }
+            System.out.println("Closest node: " + closest);
+        });
+    }
+
     public void mapNodesListener(){
         centerAnchorPane.setOnMouseClicked(event -> {
             Node node = new Node(event.getX(), event.getY());
@@ -142,16 +152,15 @@ public class TrafficMapController {
         centerAnchorPane.getChildren().add(circle);
     }
 
-    public void drawCar(Node node){
-        if(node == null)
-            return;
+    public void drawCar(Node node, String color, String nodeType){
         Circle circle = new Circle(node.getX(), node.getY(), 5);
-        //generate a random color
-        String color = "#";
-        for(int i = 0; i < 6; i++){
-            color += Integer.toHexString((int)(Math.random() * 16));
-        }
-        circle.setStroke(Color.web(color));
+        if(nodeType.equals("start"))
+            circle.setStroke(Color.web("#00ff00"));
+        else if(nodeType.equals("end"))
+            circle.setStroke(Color.web("#ff0000"));
+        else
+            circle.setStroke(Color.web(color));
+
         circle.fillProperty().setValue(Color.web(color));
         centerAnchorPane.getChildren().add(circle);
     }
@@ -185,6 +194,27 @@ public class TrafficMapController {
         centerAnchorPane.getChildren().add(line);
     }
 
+    public List<Node> getNodes() {
+        DatabaseManager databaseManager = new DatabaseManager();
+        nodes = databaseManager.loadNodes(zone);
+
+        List<Node> nodesList = new ArrayList<>();
+        for(Node node : nodes) {
+            nodesList.add(new Node(node.getX(), node.getY()));
+        }
+        return nodesList;
+    }
+
+    public List<Edge> getEdges() {
+        DatabaseManager databaseManager = new DatabaseManager();
+        edges = databaseManager.loadEdges(zone);
+        List<Edge> edgesList = new ArrayList<>();
+        for(Line edge : edges) {
+            edgesList.add(new Edge(new Node(edge.getStartX(), edge.getStartY()), new Node(edge.getEndX(), edge.getEndY())));
+        }
+        return edgesList;
+    }
+
     public void setTrafficMap(TrafficMap trafficMap) {
         this.trafficMap = trafficMap;
     }
@@ -195,12 +225,12 @@ public class TrafficMapController {
             return;
         Circle circle = new Circle(node.getX(), node.getY(), 5);
         //generate a random color
-        String color = "#";
+        StringBuilder color = new StringBuilder("#");
         for(int i = 0; i < 6; i++){
-            color += Integer.toHexString((int)(Math.random() * 16));
+            color.append(Integer.toHexString((int) (Math.random() * 16)));
         }
-        circle.setStroke(Color.web(color));
-        circle.fillProperty().setValue(Color.web(color));
+        circle.setStroke(Color.web(color.toString()));
+        circle.fillProperty().setValue(Color.web(color.toString()));
         centerAnchorPane.getChildren().add(circle);
     }
 }
