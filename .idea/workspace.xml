@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] generate random cars on the map">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] now we can generate new position for cars">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Edge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Edge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Graph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/script.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +105,7 @@
       <workItem from="1684852453227" duration="820000" />
       <workItem from="1684928011024" duration="6000" />
       <workItem from="1685037821965" duration="814000" />
-      <workItem from="1685102668485" duration="2614000" />
+      <workItem from="1685102668485" duration="3097000" />
     </task>
     <task id="LOCAL-00001" summary="added traffic maps, fully working GUI">
       <created>1684020251166</created>
@@ -129,7 +121,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685037885331</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="[UPDATE] now we can generate new position for cars">
+      <created>1685105318486</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1685105318486</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +148,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added traffic maps, fully working GUI" />
     <MESSAGE value="[UPDATE] generate random cars on the map" />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] generate random cars on the map" />
+    <MESSAGE value="[UPDATE] now we can generate new position for cars" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] now we can generate new position for cars" />
   </component>
 </project>
