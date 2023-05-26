@@ -60,22 +60,26 @@ public class TrafficMap {
     }
 
     private void beginSimulation() throws SQLException {
-        simulation = new Simulation(zone, cars, intensity, hazard);
+        simulation = new Simulation(zone, cars, intensity, hazard, this);
         //simulation.generateCars(zone);
-        List<Car> carList = simulation.generateCars(zone);
-        List<Node> nodeList = simulation.generateNodes(zone);
-        List<Edge> edgeList = simulation.generateEdges(zone);
+        List<Car> carList = simulation.generateCars();
+        List<Node> nodeList = simulation.generateNodes();
+        List<Edge> edgeList = simulation.generateEdges();
 
         Graph graph = new Graph(nodeList, edgeList, carList);
 
         graph.createGraph();
-        graph.printGraph();
+        //graph.printGraph();
 
         for(Car car : carList){
             trafficMapController.drawCar(car.getPosition());
+            simulation.moveCar(car);
         }
+
     }
 
 
-
+    public void updateCarPosition(Car car, Node node) {
+        trafficMapController.updateCarPosition(car, node);
+    }
 }

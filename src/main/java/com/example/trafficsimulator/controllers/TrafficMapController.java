@@ -1,5 +1,6 @@
 package com.example.trafficsimulator.controllers;
 
+import com.example.trafficsimulator.models.Car;
 import com.example.trafficsimulator.models.DatabaseManager;
 import com.example.trafficsimulator.models.Node;
 import com.example.trafficsimulator.scenes.TrafficMap;
@@ -151,6 +152,7 @@ public class TrafficMapController {
             color += Integer.toHexString((int)(Math.random() * 16));
         }
         circle.setStroke(Color.web(color));
+        circle.fillProperty().setValue(Color.web(color));
         centerAnchorPane.getChildren().add(circle);
     }
 
@@ -185,5 +187,20 @@ public class TrafficMapController {
 
     public void setTrafficMap(TrafficMap trafficMap) {
         this.trafficMap = trafficMap;
+    }
+
+
+    public void updateCarPosition(Car car, Node node) {
+        if(car == null || node == null)
+            return;
+        Circle circle = new Circle(node.getX(), node.getY(), 5);
+        //generate a random color
+        String color = "#";
+        for(int i = 0; i < 6; i++){
+            color += Integer.toHexString((int)(Math.random() * 16));
+        }
+        circle.setStroke(Color.web(color));
+        circle.fillProperty().setValue(Color.web(color));
+        centerAnchorPane.getChildren().add(circle);
     }
 }

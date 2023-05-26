@@ -46,7 +46,6 @@ public class Edge {
     public void setY2(double y2) {
         this.y2 = y2;
     }
-
     boolean connectedTo(Node node, Node node2){
         return (node.getX() == x1 && node.getY() == y1 && node2.getX() == x2 && node2.getY() == y2) ||
                 (node.getX() == x2 && node.getY() == y2 && node2.getX() == x1 && node2.getY() == y1);
