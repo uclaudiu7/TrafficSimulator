@@ -47,7 +47,6 @@ public class TrafficMap {
 
         trafficMapController = fxmlLoader.getController();
         trafficMapController.setTrafficMap(this);
-        beginSimulation();
     }
 
     public void show() {
@@ -59,10 +58,9 @@ public class TrafficMap {
         return trafficMapController;
     }
 
-    private void beginSimulation() {
+    public void beginSimulation() {
         simulation = new Simulation(zone, cars, intensity, hazard, this);
         simulation.start();
-
     }
 
     public void updateCarPosition(Car car, Node node) {

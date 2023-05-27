@@ -93,6 +93,7 @@ public class TrafficMapController {
 
     public void fiveSpeedButtonAction() {
         //TODO: Implement
+        trafficMap.beginSimulation();
     }
 
     public void setZoneLabel(String text) {
@@ -220,17 +221,14 @@ public class TrafficMapController {
     }
 
 
-    public void updateCarPosition(Car car, Node node) {
-        if(car == null || node == null)
-            return;
-        Circle circle = new Circle(node.getX(), node.getY(), 5);
-        //generate a random color
-        StringBuilder color = new StringBuilder("#");
-        for(int i = 0; i < 6; i++){
-            color.append(Integer.toHexString((int) (Math.random() * 16)));
-        }
-        circle.setStroke(Color.web(color.toString()));
-        circle.fillProperty().setValue(Color.web(color.toString()));
+    public void updateCarPosition(Car car, Node current) {
+        //remove last children from centerAnchorPane
+        if(current != car.getStart())
+            centerAnchorPane.getChildren().remove(centerAnchorPane.getChildren().size() - 1);
+
+        Circle circle = new Circle(current.getX(), current.getY(), 5);
+        circle.setStroke(Color.web(car.getColor()));
+        circle.fillProperty().setValue(Color.web(car.getColor()));
         centerAnchorPane.getChildren().add(circle);
     }
 }

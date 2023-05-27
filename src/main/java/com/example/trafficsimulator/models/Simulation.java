@@ -54,17 +54,26 @@ public class Simulation {
     public List<Car> generateCars() {
         List<Car> carList = new ArrayList<>();
         Random random = new Random();
-        int upperbound = nodes.size()-1;
+        int upperbound = nodes.size();
 
         for(int i = 0; i < numberOfCars; i++){
             int index = random.nextInt(upperbound);
             Node start = nodes.get(index);
 
             List<Node> reachableNodes = start.getReachableNodes();
-            int index2 = random.nextInt(reachableNodes.size()-1);
+            while(reachableNodes.size() == 0){
+                index = random.nextInt(upperbound);
+                start = nodes.get(index);
+                reachableNodes = start.getReachableNodes();
+            }
+            int index2 = random.nextInt(reachableNodes.size());
             Node end = reachableNodes.get(index2);
 
             Car car = new Car("Car " + i, start, end);
+            car.setTrafficMapController(trafficMap.getTrafficMapController());
+            //TODO: create new thread for each car
+
+
             carList.add(car);
         }
 
@@ -72,22 +81,26 @@ public class Simulation {
     }
 
     public void start(){
+        int i = 0;
         for(Car car : cars){
-            System.out.println("Car " + car.getName() + " is moving from " + car.getStart() + " to " + car.getDestination());
+            System.out.println("Car " + i++ + " is moving from " + car.getStart() + " to " + car.getDestination());
             List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
+            car.setPath(path);
             drawPath(path, car);
         }
     }
 
     public void drawPath(List<Node> path, Car car){
         for(Node node : path){
+            System.out.println("for _____");
             if(node == path.get(0)){
                 trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "start");
             } else if(node == path.get(path.size()-1)){
                 trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "end");
             } else{
-                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "mid");
+//                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "mid");
             }
         }
+        car.move();
     }
 }
