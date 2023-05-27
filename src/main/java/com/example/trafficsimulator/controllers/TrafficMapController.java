@@ -5,6 +5,10 @@ import com.example.trafficsimulator.models.DatabaseManager;
 import com.example.trafficsimulator.models.Edge;
 import com.example.trafficsimulator.models.Node;
 import com.example.trafficsimulator.scenes.TrafficMap;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -17,6 +21,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.*;
 
@@ -220,15 +225,26 @@ public class TrafficMapController {
         this.trafficMap = trafficMap;
     }
 
+    public void moveCar(Car car, List<Node> path) {
+        SequentialTransition sequentialTransition = new SequentialTransition();
 
-    public void updateCarPosition(Car car, Node current) {
-        //remove last children from centerAnchorPane
-        if(current != car.getStart())
-            centerAnchorPane.getChildren().remove(centerAnchorPane.getChildren().size() - 1);
+        for (Node node : path) {
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(event -> {
+                car.setCurrent(node);
 
-        Circle circle = new Circle(current.getX(), current.getY(), 5);
-        circle.setStroke(Color.web(car.getColor()));
-        circle.fillProperty().setValue(Color.web(car.getColor()));
-        centerAnchorPane.getChildren().add(circle);
+                if (node != car.getStart())
+                    centerAnchorPane.getChildren().remove(centerAnchorPane.getChildren().size() - 1);
+
+                Circle circle = new Circle(node.getX(), node.getY(), 5);
+                circle.setStroke(Color.web(car.getColor()));
+                circle.setFill(Color.web(car.getColor()));
+                centerAnchorPane.getChildren().add(circle);
+            });
+
+            sequentialTransition.getChildren().add(pause);
+        }
+        sequentialTransition.play();
     }
+
 }

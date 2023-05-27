@@ -101,6 +101,5 @@ public class Simulation {
 //                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "mid");
             }
         }
-        car.move();
     }
 }

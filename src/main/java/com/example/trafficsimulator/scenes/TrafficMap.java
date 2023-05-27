@@ -62,8 +62,4 @@ public class TrafficMap {
         simulation = new Simulation(zone, cars, intensity, hazard, this);
         simulation.start();
     }
-
-    public void updateCarPosition(Car car, Node node) {
-        trafficMapController.updateCarPosition(car, node);
-    }
 }

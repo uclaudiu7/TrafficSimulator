@@ -4,7 +4,7 @@ import com.example.trafficsimulator.controllers.TrafficMapController;
 
 import java.util.List;
 
-public class Car {
+public class Car extends Thread {
     private TrafficMapController trafficMapController;
     private final String name;
     private Node start;
@@ -26,27 +26,19 @@ public class Car {
         running = true;
     }
 
-//    @Override
-//    public void run(){
-//        while(running){
-//    }
-
-
-    public void move(){
-        System.out.println("car path:" + path);
-        for(Node node : path){
-            current = node;
-            System.out.println("car current:" + current);
-            trafficMapController.updateCarPosition(this, node);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
+    @Override
+    public void run(){
+        move();
     }
 
+    public void move(){
+        trafficMapController.moveCar(this, path);
+    }
+
+    public void setCurrent(Node current){
+        this.current = current;
+        System.out.println("Current: " + current);
+    }
     public void setPath(List<Node> path){
         this.path = path;
     }

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] car generation with start point &amp; destination, shortest path generation">
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] path drawing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
@@ -109,7 +109,7 @@
       <workItem from="1684928011024" duration="6000" />
       <workItem from="1685037821965" duration="814000" />
       <workItem from="1685102668485" duration="3097000" />
-      <workItem from="1685186089655" duration="5399000" />
+      <workItem from="1685186089655" duration="7109000" />
     </task>
     <task id="LOCAL-00001" summary="added traffic maps, fully working GUI">
       <created>1684020251166</created>
@@ -139,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685137706392</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[UPDATE] path drawing">
+      <created>1685193371464</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1685193371464</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,6 +168,7 @@
     <MESSAGE value="[UPDATE] generate random cars on the map" />
     <MESSAGE value="[UPDATE] now we can generate new position for cars" />
     <MESSAGE value="[UPDATE] car generation with start point &amp; destination, shortest path generation" />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] car generation with start point &amp; destination, shortest path generation" />
+    <MESSAGE value="[UPDATE] path drawing" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] path drawing" />
   </component>
 </project>
