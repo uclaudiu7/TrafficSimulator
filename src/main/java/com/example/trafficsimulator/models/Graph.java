@@ -4,35 +4,38 @@ import java.util.*;
 
 public class Graph {
     private List<Node> nodes;
-
     private final List<Edge> edges;
-
     private List<Car> cars;
-
     private final int[][] map;
+    private final Object lock;
 
     public Graph(List<Node> nodes, List<Edge> edges, List<Car> cars) {
         this.nodes = nodes;
         this.edges = edges;
         this.cars = cars;
         this.map = new int[nodes.size()][nodes.size()];
+        this.lock = new Object();
         createGraph();
     }
 
     public void createGraph() {
-        for(Edge edge : edges) {
-            Node start = edge.getStart();
-            Node end = edge.getEnd();
+        synchronized (lock) {
+            for (Edge edge : edges) {
+                Node start = edge.getStart();
+                Node end = edge.getEnd();
 
-            int index1 = nodes.indexOf(start);
-            int index2 = nodes.indexOf(end);
+                int index1 = nodes.indexOf(start);
+                int index2 = nodes.indexOf(end);
 
-            map[index1][index2] = 1;
+                map[index1][index2] = 1;
+            }
         }
     }
 
-    public void setNodes(List<Node> nodes){
-        this.nodes = nodes;
+    public void setNodes(List<Node> nodes) {
+        synchronized (lock) {
+            this.nodes = nodes;
+        }
     }
 
     public List<Node> getShortestPath(Node source, Node destination){
@@ -72,12 +75,14 @@ public class Graph {
         return path;
     }
 
-    public void printGraph(){
-        for(int i = 0;i <nodes.size();i++){
-            for(int j = 0;j<nodes.size();j++){
-                System.out.print(map[i][j] + " ");
+    public void printGraph() {
+        synchronized (lock) {
+            for (int i = 0; i < nodes.size(); i++) {
+                for (int j = 0; j < nodes.size(); j++) {
+                    System.out.print(map[i][j] + " ");
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 }

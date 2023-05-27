@@ -7,21 +7,23 @@ import java.util.Objects;
 public class Node {
     private final double x;
     private final double y;
-    private Car ocupant;
-    List<Node> neighbours;
-    List<Node> reachableNodes;
+    private final List<Node> neighbours;
+    private final List<Node> reachableNodes;
+    private final Object lock;
+    private Car occupant;
 
     public Node(double x, double y) {
         this.x = x;
         this.y = y;
-        neighbours = new ArrayList<>();
-        reachableNodes = new ArrayList<>();
+        this.neighbours = new ArrayList<>();
+        this.reachableNodes = new ArrayList<>();
+        this.lock = new Object();
+        this.occupant = null;
     }
 
     @Override
     public String toString() {
-        return  "[" + x +
-                ", " + y + "]";
+        return "[" + x + ", " + y + "]";
     }
 
     @Override
@@ -36,37 +38,80 @@ public class Node {
         return Objects.hash(getX(), getY());
     }
 
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public void setOcupant(Car ocupant) { this.ocupant = ocupant; }
-    public Car getOcupant() { return ocupant; }
-    public boolean isOcupied() { return ocupant != null; }
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setOccupant(Car occupant) {
+        synchronized (lock) {
+            this.occupant = occupant;
+        }
+    }
+
+    public Car getOccupant() {
+        synchronized (lock) {
+            return occupant;
+        }
+    }
+
+    public boolean isOccupied() {
+        synchronized (lock) {
+            return occupant != null;
+        }
+    }
+
+    public void setOccupied(boolean occupied) {
+        synchronized (lock) {
+            if (!occupied) {
+                occupant = null;
+            }
+        }
+    }
+
     public Double distanceTo(Node node) {
         return Math.sqrt(Math.pow(this.x - node.x, 2) + Math.pow(this.y - node.y, 2));
     }
 
     public void addReachableNodes(Node node, Node current) {
-        List<Node> neighbours = node.getNeighbours();
-        if(neighbours != null){
-            for(Node neighbour : neighbours){
-                if(!reachableNodes.contains(neighbour) && !neighbour.equals(current)){
-                    reachableNodes.add(neighbour);
-                    addReachableNodes(neighbour, node);
+        synchronized (lock) {
+            List<Node> neighbours = node.getNeighbours();
+            if (neighbours != null) {
+                for (Node neighbour : neighbours) {
+                    if (!reachableNodes.contains(neighbour) && !neighbour.equals(current)) {
+                        reachableNodes.add(neighbour);
+                        addReachableNodes(neighbour, node);
+                    }
                 }
             }
         }
     }
 
     public List<Node> getReachableNodes() {
-        return reachableNodes;
+        synchronized (lock) {
+            return reachableNodes;
+        }
     }
 
     public void addNeighbour(Node node) {
-        neighbours.add(node);
+        synchronized (lock) {
+            neighbours.add(node);
+        }
     }
 
     public List<Node> getNeighbours() {
-        return neighbours;
+        synchronized (lock) {
+            return neighbours;
+        }
     }
 
+    public void setOccupiedBy(Car car) {
+        synchronized (lock) {
+            occupant = car;
+        }
+    }
 }
+

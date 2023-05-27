@@ -1,14 +1,13 @@
 package com.example.trafficsimulator.controllers;
 
-import com.example.trafficsimulator.models.Car;
-import com.example.trafficsimulator.models.DatabaseManager;
-import com.example.trafficsimulator.models.Edge;
-import com.example.trafficsimulator.models.Node;
+import com.example.trafficsimulator.models.*;
 import com.example.trafficsimulator.scenes.TrafficMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -24,6 +23,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TrafficMapController {
     private String zone;
@@ -224,27 +226,86 @@ public class TrafficMapController {
     public void setTrafficMap(TrafficMap trafficMap) {
         this.trafficMap = trafficMap;
     }
-
+    private Map<Car, Circle> carCircleMap = new HashMap<>();
     public void moveCar(Car car, List<Node> path) {
-        SequentialTransition sequentialTransition = new SequentialTransition();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                CountDownLatch latch = new CountDownLatch(path.size());
 
-        for (Node node : path) {
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(event -> {
-                car.setCurrent(node);
+                Platform.runLater(() -> {
+                    Circle circle = new Circle(car.getStart().getX(), car.getStart().getY(), 5);
+                    circle.setStroke(Color.web(car.getColor()));
+                    circle.setFill(Color.web(car.getColor()));
+                    centerAnchorPane.getChildren().add(circle);
+                    carCircleMap.put(car, circle);
+                    latch.countDown();
+                });
 
-                if (node != car.getStart())
-                    centerAnchorPane.getChildren().remove(centerAnchorPane.getChildren().size() - 1);
+                for (int i = 1; i < path.size(); i++) {
+                    Node previousNode = path.get(i - 1);
+                    Node currentNode = path.get(i);
 
-                Circle circle = new Circle(node.getX(), node.getY(), 5);
-                circle.setStroke(Color.web(car.getColor()));
-                circle.setFill(Color.web(car.getColor()));
-                centerAnchorPane.getChildren().add(circle);
-            });
+                    Thread.sleep(1000);
 
-            sequentialTransition.getChildren().add(pause);
-        }
-        sequentialTransition.play();
+                    synchronized (currentNode) {
+                        while (currentNode.isOccupied()) {
+                            try {
+                                currentNode.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Mark the current node as occupied by the car
+                        currentNode.setOccupied(true);
+                        currentNode.setOccupiedBy(car);
+                    }
+
+                    Platform.runLater(() -> {
+                        System.out.println("Car: " + car.getName() + ", Current Node: " + currentNode);
+
+                        Circle previousCircle = carCircleMap.get(car);
+                        centerAnchorPane.getChildren().remove(previousCircle);
+
+                        Circle circle = new Circle(currentNode.getX(), currentNode.getY(), 5);
+                        circle.setStroke(Color.web(car.getColor()));
+                        circle.setFill(Color.web(car.getColor()));
+                        centerAnchorPane.getChildren().add(circle);
+                        carCircleMap.put(car, circle);
+
+                        synchronized (previousNode) {
+                            previousNode.setOccupied(false);
+                            previousNode.notifyAll();
+                        }
+
+                        if(currentNode.equals(car.getDestination()))
+                        {
+                            System.out.println("Car: " + car.getName() + ", Reached Destination");
+                            synchronized (currentNode) {
+                                currentNode.setOccupied(false);
+                                currentNode.notifyAll();
+                            }
+                            Platform.runLater(() -> {
+                                Circle circle1 = carCircleMap.get(car);
+                                centerAnchorPane.getChildren().remove(circle1);
+                                carCircleMap.remove(car);
+                            });
+
+                        }
+
+                        latch.countDown();
+                    });
+                }
+
+                latch.await(); // Wait for all UI updates to complete
+
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(task); // Create a separate thread for the task
+        thread.setDaemon(true); // Set the thread as a daemon thread to allow application exit
+        thread.start(); // Start the thread
     }
-
 }

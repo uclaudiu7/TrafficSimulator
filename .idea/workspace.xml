@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] path drawing">
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] now we can generate new position for cars">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Graph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

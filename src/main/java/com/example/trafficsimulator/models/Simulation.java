@@ -86,7 +86,8 @@ public class Simulation {
             System.out.println("Car " + i++ + " is moving from " + car.getStart() + " to " + car.getDestination());
             List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
             car.setPath(path);
-            drawPath(path, car);
+            //drawPath(path, car);
+            car.start();
         }
     }
 
