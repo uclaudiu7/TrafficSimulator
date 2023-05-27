@@ -38,6 +38,7 @@ public class TrafficMapController {
 
     private TrafficMap trafficMap;
 
+    @FXML private AnchorPane topAnchorPane;
     @FXML private AnchorPane centerAnchorPane;
 
     @FXML private Label zoneLabel;
@@ -59,6 +60,11 @@ public class TrafficMapController {
         fiveSpeedButton.setLayoutX(1536 - 30);
         twoSpeedButton.setLayoutX(fiveSpeedButton.getLayoutX() - 40);
         oneSpeedButton.setLayoutX(twoSpeedButton.getLayoutX() - 40);
+        topAnchorPane.setOnMousePressed(e ->topAnchorPane.setOnMouseDragged(e2 -> {
+            Stage stage = (Stage) topAnchorPane.getScene().getWindow();
+            stage.setX(e2.getScreenX() - e.getSceneX());
+            stage.setY(e2.getScreenY() - e.getSceneY());
+        }));
         //mapNodesListener();
     }
 
@@ -254,7 +260,7 @@ public class TrafficMapController {
                     Thread.sleep(1000);
 
                     synchronized (currentNode) {
-                        while (currentNode.isOccupied() || previousNode.getTrafficLightColor().equals("red")) {
+                        while (currentNode.isOccupied() || currentNode.getTrafficLightColor().equals("red")) {
                             try {
                                 currentNode.wait();
                             } catch (InterruptedException e) {
@@ -283,6 +289,7 @@ public class TrafficMapController {
                             previousNode.setOccupied(false);
                             previousNode.notifyAll();
                         }
+
 
                         if(currentNode.equals(car.getDestination()))
                         {
