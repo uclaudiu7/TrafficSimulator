@@ -11,6 +11,7 @@ public class Node {
     private final List<Node> reachableNodes;
     private final Object lock;
     private Car occupant;
+    private String trafficLightColor;
 
     public Node(double x, double y) {
         this.x = x;
@@ -19,6 +20,7 @@ public class Node {
         this.reachableNodes = new ArrayList<>();
         this.lock = new Object();
         this.occupant = null;
+        this.trafficLightColor = "none";
     }
 
     @Override
@@ -44,6 +46,17 @@ public class Node {
 
     public double getY() {
         return y;
+    }
+
+    public String getTrafficLightColor() {
+        synchronized (lock) {
+            return trafficLightColor;
+        }
+    }
+    public void setTrafficLightColor(String color) {
+        synchronized (lock) {
+            trafficLightColor = color;
+        }
     }
 
     public void setOccupant(Car occupant) {

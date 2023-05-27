@@ -16,6 +16,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Screen;
@@ -67,7 +68,6 @@ public class TrafficMapController {
     }
 
     public void pauseButtonAction() {
-        System.out.println("Pause button pressed: " + pauseButton.isSelected());
         //TODO: Implement
 //        DatabaseManager databaseManager = new DatabaseManager();
 //        databaseManager.insertNodes(nodes, zone);
@@ -90,6 +90,12 @@ public class TrafficMapController {
     public void oneSpeedButtonAction() {
         //TODO: Implement
         closestNodeListener();
+        /*
+        * [805.6, 436.0]
+        * [806.4, 408.0]
+        * [765.6, 405.6]
+        * [764.8, 435.2]
+        * */
         //mapNodesListener();
     }
 
@@ -234,7 +240,7 @@ public class TrafficMapController {
                 CountDownLatch latch = new CountDownLatch(path.size());
 
                 Platform.runLater(() -> {
-                    Circle circle = new Circle(car.getStart().getX(), car.getStart().getY(), 5);
+                    Circle circle = new Circle(car.getStart().getX(), car.getStart().getY(), 8);
                     circle.setStroke(Color.web(car.getColor()));
                     circle.setFill(Color.web(car.getColor()));
                     centerAnchorPane.getChildren().add(circle);
@@ -245,11 +251,10 @@ public class TrafficMapController {
                 for (int i = 1; i < path.size(); i++) {
                     Node previousNode = path.get(i - 1);
                     Node currentNode = path.get(i);
-
                     Thread.sleep(1000);
 
                     synchronized (currentNode) {
-                        while (currentNode.isOccupied()) {
+                        while (currentNode.isOccupied() || previousNode.getTrafficLightColor().equals("red")) {
                             try {
                                 currentNode.wait();
                             } catch (InterruptedException e) {
@@ -263,12 +268,12 @@ public class TrafficMapController {
                     }
 
                     Platform.runLater(() -> {
-                        System.out.println("Car: " + car.getName() + ", Current Node: " + currentNode);
+                        //System.out.println("Car: " + car.getName() + ", Current Node: " + currentNode);
 
                         Circle previousCircle = carCircleMap.get(car);
                         centerAnchorPane.getChildren().remove(previousCircle);
 
-                        Circle circle = new Circle(currentNode.getX(), currentNode.getY(), 5);
+                        Circle circle = new Circle(currentNode.getX(), currentNode.getY(), 8);
                         circle.setStroke(Color.web(car.getColor()));
                         circle.setFill(Color.web(car.getColor()));
                         centerAnchorPane.getChildren().add(circle);
@@ -281,7 +286,7 @@ public class TrafficMapController {
 
                         if(currentNode.equals(car.getDestination()))
                         {
-                            System.out.println("Car: " + car.getName() + ", Reached Destination");
+                            //System.out.println("Car: " + car.getName() + ", Reached Destination");
                             synchronized (currentNode) {
                                 currentNode.setOccupied(false);
                                 currentNode.notifyAll();

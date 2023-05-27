@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class DatabaseManager {
@@ -115,6 +117,35 @@ public class DatabaseManager {
             throw new RuntimeException(e);
         }
         return nodes;
+    }
+
+    public List<Node> loadTrafficLights(String zone){
+        List<Node> trafficLights = new ArrayList<>();
+        String sql;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT * FROM lights_uaic";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT * FROM lights_pasarela";
+        } else {
+            sql = "SELECT * FROM lights_eminescu";
+        }
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+            while(pstmt.getResultSet().next()){
+                Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
+                int color = pstmt.getResultSet().getInt("light");
+                if(color == 0)
+                    node.setTrafficLightColor("red");
+                else if(color == 1)
+                    node.setTrafficLightColor("green");
+                trafficLights.add(node);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return trafficLights;
     }
 }
 

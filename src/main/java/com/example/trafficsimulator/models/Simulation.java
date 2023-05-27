@@ -15,6 +15,7 @@ public class Simulation {
     private int[][] map;
     private final Graph graph;
     private final List<Node> nodes;
+    private List<Node> trafficLights;
     private final List<Edge> edges;
     private List<Car> cars;
 
@@ -30,6 +31,61 @@ public class Simulation {
         setNeighbours();
         setReachableNodes();
         cars = generateCars();
+        setTrafficLights();
+    }
+
+    public void setTrafficLights(){
+        DatabaseManager databaseManager = new DatabaseManager();
+        trafficLights = databaseManager.loadTrafficLights(zone);
+
+        int i = 1;
+        for(Node node : trafficLights){
+            System.out.println("Semafor: " + i++ + ": " + node  + " color: " + node.getTrafficLightColor());
+        }
+
+        for(Node node : trafficLights) {
+            int index = nodes.indexOf(node);
+            nodes.get(index).setTrafficLightColor(node.getTrafficLightColor());
+        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    //for inversam culorile
+                    int i = 1;
+                    for(Node node : trafficLights){
+                        int index = nodes.indexOf(node);
+                        if(nodes.get(index).getTrafficLightColor().equals("red")){
+                            System.out.println("Semafor: " + i +  " has color: " + nodes.get(index).getTrafficLightColor());
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            nodes.get(index).setTrafficLightColor("green");
+                            System.out.println("Semafor: " + i++ +  " changed color: " + nodes.get(index).getTrafficLightColor());
+                        } else if(nodes.get(index).getTrafficLightColor().equals("green")){
+                            System.out.println("Semafor: " + i +  " has color: " + nodes.get(index).getTrafficLightColor());
+                            nodes.get(index).setTrafficLightColor("red");
+                            System.out.println("Semafor: " + i++ +  " changed color: " + nodes.get(index).getTrafficLightColor());
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                    //notifyAll();
+                    //sleep 5 sec
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 
     public void setNeighbours(){
@@ -71,8 +127,6 @@ public class Simulation {
 
             Car car = new Car("Car " + i, start, end);
             car.setTrafficMapController(trafficMap.getTrafficMapController());
-            //TODO: create new thread for each car
-
 
             carList.add(car);
         }
@@ -83,7 +137,7 @@ public class Simulation {
     public void start(){
         int i = 0;
         for(Car car : cars){
-            System.out.println("Car " + i++ + " is moving from " + car.getStart() + " to " + car.getDestination());
+            //System.out.println("Car " + i++ + " is moving from " + car.getStart() + " to " + car.getDestination());
             List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
             car.setPath(path);
             //drawPath(path, car);
@@ -93,7 +147,6 @@ public class Simulation {
 
     public void drawPath(List<Node> path, Car car){
         for(Node node : path){
-            System.out.println("for _____");
             if(node == path.get(0)){
                 trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "start");
             } else if(node == path.get(path.size()-1)){
