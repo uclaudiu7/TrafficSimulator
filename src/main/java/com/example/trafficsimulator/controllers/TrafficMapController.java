@@ -96,17 +96,12 @@ public class TrafficMapController {
     public void oneSpeedButtonAction() {
         //TODO: Implement
         closestNodeListener();
-        /*
-        * [805.6, 436.0]
-        * [806.4, 408.0]
-        * [765.6, 405.6]
-        * [764.8, 435.2]
-        * */
         //mapNodesListener();
     }
 
     public void twoSpeedButtonAction() {
         //TODO: Implement
+        getTrafficLights();
         //mapEdgesListener();
     }
 
@@ -141,6 +136,10 @@ public class TrafficMapController {
         else
             background = new Image(Objects.requireNonNull(getClass().getResource("/images/eminescu.png")).toString());
         centerAnchorPane.setStyle("-fx-background-image: url('" + background.getUrl() + "'); ");
+    }
+
+    public void getTrafficLights(){
+        trafficMap.getSimulation().printTrafficLights();
     }
 
     public void closestNodeListener(){
@@ -260,7 +259,7 @@ public class TrafficMapController {
                     Thread.sleep(200);
 
                     synchronized (currentNode) {
-                        while (currentNode.isOccupied() || currentNode.getTrafficLightColor().equals("red")) {
+                        while (currentNode.isOccupied() || currentNode.getTrafficLightColor() != 2) { // 2 = green
                             try {
                                 currentNode.wait();
                             } catch (InterruptedException e) {
@@ -320,4 +319,34 @@ public class TrafficMapController {
         thread.setDaemon(true); // Set the thread as a daemon thread to allow application exit
         thread.start(); // Start the thread
     }
+
+    public void updateTrafficLight(TrafficLight trafficLight, int color){
+        Platform.runLater(() -> {
+            Node node;
+            if(color == 0){ // 0 = red
+                node = trafficLight.getRed();
+            } else if(color == 1 || color == 3){ // 1,3 = yellow
+                node = trafficLight.getYellow();
+            }
+            else{ // 2 = green
+                node = trafficLight.getGreen();
+            }
+
+            Circle circle = new Circle(node.getX(), node.getY(), 5);
+            if(color == 0){  // 0 = red
+                circle.setStroke(Color.web("#ff0000"));
+                circle.fillProperty().setValue(Color.web("#ff0000"));
+            }
+            else if(color == 1 || color == 3){ // 1,3 = yellow
+                circle.setStroke(Color.web("#ffff00"));
+                circle.fillProperty().setValue(Color.web("#ffff00"));
+            }
+            else { // 2 = green
+                circle.setStroke(Color.web("#00ff00"));
+                circle.fillProperty().setValue(Color.web("#00ff00"));
+            }
+            centerAnchorPane.getChildren().add(circle);
+        });
+    }
+
 }

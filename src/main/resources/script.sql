@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2023 at 09:25 PM
+-- Generation Time: May 28, 2023 at 07:31 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -1394,24 +1394,105 @@ INSERT INTO `edges_uaic` (`x1`, `y1`, `x2`, `y2`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lights_eminescu`
+--
+
+CREATE TABLE `lights_eminescu` (
+                                   `x` double DEFAULT NULL,
+                                   `y` double DEFAULT NULL,
+                                   `light` int(11) DEFAULT NULL,
+                                   `light_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lights_pasarela`
+--
+
+CREATE TABLE `lights_pasarela` (
+                                   `x` double DEFAULT NULL,
+                                   `y` double DEFAULT NULL,
+                                   `light` int(11) DEFAULT NULL,
+                                   `light_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lights_pos_eminescu`
+--
+
+CREATE TABLE `lights_pos_eminescu` (
+                                       `x` double DEFAULT NULL,
+                                       `y` double DEFAULT NULL,
+                                       `light_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lights_pos_pasarela`
+--
+
+CREATE TABLE `lights_pos_pasarela` (
+                                       `x` double DEFAULT NULL,
+                                       `y` double DEFAULT NULL,
+                                       `light_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lights_pos_uaic`
+--
+
+CREATE TABLE `lights_pos_uaic` (
+                                   `x` double DEFAULT NULL,
+                                   `y` double DEFAULT NULL,
+                                   `light_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lights_pos_uaic`
+--
+
+INSERT INTO `lights_pos_uaic` (`x`, `y`, `light_id`) VALUES
+                                                         (834.4, 428, 1),
+                                                         (840.8, 437.6, 1),
+                                                         (846.4, 447.2, 1),
+                                                         (804.8, 391.2, 2),
+                                                         (816, 386.4, 2),
+                                                         (827.2, 383.2, 2),
+                                                         (745.6, 417.6, 3),
+                                                         (740.8, 407.2, 3),
+                                                         (736, 396.8, 3),
+                                                         (775.2, 453.6, 4),
+                                                         (764, 457.6, 4),
+                                                         (752.8, 462.4, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lights_uaic`
 --
 
 CREATE TABLE `lights_uaic` (
                                `x` double DEFAULT NULL,
                                `y` double DEFAULT NULL,
-                               `light` int(11) DEFAULT NULL
+                               `light` int(11) DEFAULT NULL,
+                               `light_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `lights_uaic`
 --
 
-INSERT INTO `lights_uaic` (`x`, `y`, `light`) VALUES
-                                                  (805.6, 436, 1),
-                                                  (806.4, 408, 0),
-                                                  (765.6, 405.6, 1),
-                                                  (764.8, 435.2, 0);
+INSERT INTO `lights_uaic` (`x`, `y`, `light`, `light_id`) VALUES
+                                                              (805.6, 436, 1, 1),
+                                                              (806.4, 408, 0, 2),
+                                                              (765.6, 405.6, 1, 3),
+                                                              (764.8, 435.2, 0, 4);
 
 -- --------------------------------------------------------
 
@@ -1531,7 +1612,6 @@ INSERT INTO `nodes_eminescu` (`x`, `y`) VALUES
                                             (1322, 423),
                                             (1348, 432),
                                             (1376, 441),
-                                            (1399, 454),
                                             (1399, 454),
                                             (1420, 465),
                                             (1452, 478),

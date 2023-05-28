@@ -11,7 +11,8 @@ public class Node {
     private final List<Node> reachableNodes;
     private final Object lock;
     private Car occupant;
-    private String trafficLightColor;
+    private int trafficLightColor; // 0 = red, 1 = yellow, 2 = green, 3 = yellow
+    private int trafficLightId;
 
     public Node(double x, double y) {
         this.x = x;
@@ -20,7 +21,7 @@ public class Node {
         this.reachableNodes = new ArrayList<>();
         this.lock = new Object();
         this.occupant = null;
-        this.trafficLightColor = "none";
+        this.trafficLightColor = 2;
     }
 
     @Override
@@ -48,14 +49,33 @@ public class Node {
         return y;
     }
 
-    public String getTrafficLightColor() {
+    public void setTrafficLightColor(int trafficLightColor) {
+        synchronized (lock) {
+            this.trafficLightColor = trafficLightColor;
+        }
+    }
+
+    public int getTrafficLightColor() {
         synchronized (lock) {
             return trafficLightColor;
         }
     }
-    public void setTrafficLightColor(String color) {
+    public void switchTrafficLightColor() {
+        System.out.println("Switching " + trafficLightId + " --> from " + trafficLightColor + " to " + (trafficLightColor + 1) % 4);
         synchronized (lock) {
-            trafficLightColor = color;
+            trafficLightColor = (trafficLightColor + 1) % 4;
+        }
+    }
+
+    public void setTrafficLightId(int trafficLightId) {
+        synchronized (lock) {
+            this.trafficLightId = trafficLightId;
+        }
+    }
+
+    public int getTrafficLightId() {
+        synchronized (lock) {
+            return trafficLightId;
         }
     }
 

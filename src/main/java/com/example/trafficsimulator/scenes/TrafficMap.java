@@ -19,7 +19,6 @@ public class TrafficMap {
     private final int cars;
     private final double intensity;
     private final double hazard;
-
     private Simulation simulation;
 
     public TrafficMap(Stage stage, String zone, int cars, double intensity, double hazard) throws IOException {
@@ -61,5 +60,9 @@ public class TrafficMap {
     public void beginSimulation() {
         simulation = new Simulation(zone, cars, intensity, hazard, this);
         simulation.start();
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
     }
 }

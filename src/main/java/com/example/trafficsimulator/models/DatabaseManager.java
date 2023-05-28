@@ -135,10 +135,12 @@ public class DatabaseManager {
             while(pstmt.getResultSet().next()){
                 Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
                 int color = pstmt.getResultSet().getInt("light");
+                int id = pstmt.getResultSet().getInt("light_id");
                 if(color == 0)
-                    node.setTrafficLightColor("red");
+                    node.setTrafficLightColor(0);
                 else if(color == 1)
-                    node.setTrafficLightColor("green");
+                    node.setTrafficLightColor(2);
+                node.setTrafficLightId(id);
                 trafficLights.add(node);
             }
         } catch (SQLException e) {
@@ -147,5 +149,39 @@ public class DatabaseManager {
 
         return trafficLights;
     }
+
+    public List<TrafficLight> loadTrafficLightPositions(String zone){
+        List<TrafficLight> trafficLights = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
+        String sql;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT * FROM lights_pos_uaic";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT * FROM lights_pos_pasarela";
+        } else {
+            sql = "SELECT * FROM lights_pos_eminescu";
+        }
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+            while(pstmt.getResultSet().next()){
+                Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
+                int id = pstmt.getResultSet().getInt("light_id");
+                node.setTrafficLightId(id);
+                nodes.add(node);
+                if(nodes.size() == 3){
+                    TrafficLight trafficLight = new TrafficLight(id ,nodes.get(0), nodes.get(1), nodes.get(2));
+                    trafficLights.add(trafficLight);
+                    nodes.clear();
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return trafficLights;
+    }
+
 }
 
