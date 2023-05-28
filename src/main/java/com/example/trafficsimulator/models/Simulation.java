@@ -1,6 +1,7 @@
 package com.example.trafficsimulator.models;
 
 import com.example.trafficsimulator.scenes.TrafficMap;
+import javafx.application.Platform;
 
 import java.sql.Time;
 import java.util.*;
@@ -51,23 +52,58 @@ public class Simulation {
             System.out.println("Semafor id: " + node.getTrafficLightId() + " index: "+ index+ ": " + node + " color: " + node.getTrafficLightColor());
         }
 
+        for(Node node : trafficLights){
+            Thread thread = new Thread(() -> {
+                scheduleTrafficLights(node, 10000);
+            });
+            thread.start();
+        }
+    }
+
+    public void scheduleTrafficLights(Node node, long period){
+        Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                for (Node node : trafficLights) {
-                    int index = nodes.indexOf(node);
-                    nodes.get(index).switchTrafficLightColor();
-                    trafficMap.getTrafficMapController().updateTrafficLight(trafficLightPositions.get(node.getTrafficLightId()-1), node.getTrafficLightColor());
-                    synchronized (nodes.get(index)) {
-                        nodes.get(index).notifyAll();
-                    }
+                int index = nodes.indexOf(node);
+                nodes.get(index).switchTrafficLightColor();
+                trafficMap.getTrafficMapController().updateTrafficLight(
+                        trafficLightPositions.get(node.getTrafficLightId()-1),
+                        nodes.get(index).getTrafficLightColor()
+                );
+                synchronized (nodes.get(index)) {
+                    nodes.get(index).notifyAll();
+                }
+
+                if(nodes.get(index).getTrafficLightColor() == 1 || nodes.get(index).getTrafficLightColor() == 3){
+                    cancel();
+
+                    // Schedule a new task after the desired delay
+                    Timer newTimer = new Timer();
+                    TimerTask newTimerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            scheduleTrafficLights(node, 2000);
+                        }
+                    };
+                    newTimer.schedule(newTimerTask, 2000);
+                } else {
+                    cancel();
+
+                    // Schedule a new task after the desired delay
+                    Timer newTimer = new Timer();
+                    TimerTask newTimerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            scheduleTrafficLights(node,10000);
+                        }
+                    };
+                    newTimer.schedule(newTimerTask, 10000);
                 }
             }
         };
 
-        Timer timer = new Timer();
-        timer.schedule(timerTask, 0, 10000);
-
+        timer.schedule(timerTask, 0, period);
     }
 
     public void printTrafficLights(){

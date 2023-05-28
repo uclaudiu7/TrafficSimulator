@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2023 at 07:31 PM
+-- Generation Time: May 28, 2023 at 11:03 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -1389,7 +1389,15 @@ INSERT INTO `edges_uaic` (`x1`, `y1`, `x2`, `y2`) VALUES
                                                       (956, 714.4, 965.6, 735.2),
                                                       (965.6, 735.2, 974.4, 746.4),
                                                       (974.4, 746.4, 985.6, 765.6),
-                                                      (985.6, 765.6, 996, 781.6);
+                                                      (985.6, 765.6, 996, 781.6),
+                                                      (806.4, 408, 788.8, 424),
+                                                      (788.8, 424, 790.4, 445.6),
+                                                      (764.8, 435.2, 784.8, 418.4),
+                                                      (784.8, 418.4, 785.6, 402.4),
+                                                      (805.6, 436, 788.8, 424),
+                                                      (788.8, 424, 760.8, 425.6),
+                                                      (765.6, 405.6, 784.8, 418.4),
+                                                      (784.8, 418.4, 812.8, 419.2);
 
 -- --------------------------------------------------------
 
@@ -2828,7 +2836,9 @@ INSERT INTO `nodes_uaic` (`x`, `y`, `id`) VALUES
                                               (567.2, 52, 253),
                                               (558.4, 36.8, 254),
                                               (547.2, 17.6, 255),
-                                              (532, 2.3999999999999986, 256);
+                                              (532, 2.3999999999999986, 256),
+                                              (784.8, 418.4, 257),
+                                              (788.8, 424, 258);
 
 --
 -- Indexes for dumped tables
@@ -2848,7 +2858,7 @@ ALTER TABLE `nodes_uaic`
 -- AUTO_INCREMENT for table `nodes_uaic`
 --
 ALTER TABLE `nodes_uaic`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

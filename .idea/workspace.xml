@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] added traffic lights (with minor bugs)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/TrafficLight.java" afterDir="false" />
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[UPDATE] fixed traffic light timing">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cars/bus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cars/jeep.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cars/taxi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cars/tesla.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cars/truck.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/uaic.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/uaic.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/TrafficLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/TrafficLight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/script.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +51,7 @@
     "WebServerToolWindowFactoryState": "false",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/faculta/ProgrAvansata/TrafficSimulator/src/main/resources/images",
+    "last_opened_file_path": "D:/faculta/ProgrAvansata/TrafficSimulator/src/main/resources/cars",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -66,10 +68,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src\main\resources\cars" />
       <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src\main\resources\images" />
       <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src\main\resources\cars" />
       <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src\main\resources\images" />
       <recent name="D:\faculta\ProgrAvansata\TrafficSimulator\src\main\resources\com\example\trafficsimulator" />
     </key>
@@ -126,7 +130,9 @@
       <workItem from="1685186089655" duration="7109000" />
       <workItem from="1685211595767" duration="7978000" />
       <workItem from="1685278695443" duration="4422000" />
-      <workItem from="1685287122173" duration="7831000" />
+      <workItem from="1685287122173" duration="9533000" />
+      <workItem from="1685296837822" duration="1255000" />
+      <workItem from="1685298107997" duration="13920000" />
     </task>
     <task id="LOCAL-00001" summary="added traffic maps, fully working GUI">
       <created>1684020251166</created>
@@ -170,7 +176,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685219094162</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="[UPDATE] fixed traffic light timing">
+      <created>1685295129322</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1685295129322</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,6 +207,7 @@
     <MESSAGE value="[UPDATE] car generation with start point &amp; destination, shortest path generation" />
     <MESSAGE value="[UPDATE] path drawing" />
     <MESSAGE value="[UPDATE] added traffic lights (with minor bugs)" />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] added traffic lights (with minor bugs)" />
+    <MESSAGE value="[UPDATE] fixed traffic light timing" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] fixed traffic light timing" />
   </component>
 </project>

@@ -1,5 +1,8 @@
 package com.example.trafficsimulator.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrafficLight {
     private int id;
     private Node red;
@@ -28,6 +31,15 @@ public class TrafficLight {
     public Node getGreen() {
         return green;
     }
+
+    public List<Node> getNodes() {
+        List<Node> nodes = new ArrayList<>();
+        nodes.add(red);
+        nodes.add(yellow);
+        nodes.add(green);
+        return nodes;
+    }
+
 
     @Override
     public String toString() {

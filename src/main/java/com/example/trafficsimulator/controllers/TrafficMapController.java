@@ -13,7 +13,9 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -23,10 +25,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 
 public class TrafficMapController {
     private String zone;
@@ -55,7 +59,6 @@ public class TrafficMapController {
 
     @FXML
     private void initialize() {
-        //Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         exitButton.setLayoutX(1536 - 30);
         fiveSpeedButton.setLayoutX(1536 - 30);
         twoSpeedButton.setLayoutX(fiveSpeedButton.getLayoutX() - 40);
@@ -65,7 +68,6 @@ public class TrafficMapController {
             stage.setX(e2.getScreenX() - e.getSceneX());
             stage.setY(e2.getScreenY() - e.getSceneY());
         }));
-        //mapNodesListener();
     }
 
     public void exitButtonAction() {
@@ -96,12 +98,14 @@ public class TrafficMapController {
     public void oneSpeedButtonAction() {
         //TODO: Implement
         closestNodeListener();
+//        Node added: [788.8, 424.0] jos
+//        Node added: [784.8, 418.4] sus
         //mapNodesListener();
     }
 
     public void twoSpeedButtonAction() {
         //TODO: Implement
-        getTrafficLights();
+        //getTrafficLights();
         //mapEdgesListener();
     }
 
@@ -238,6 +242,7 @@ public class TrafficMapController {
         this.trafficMap = trafficMap;
     }
     private Map<Car, Circle> carCircleMap = new HashMap<>();
+    private Map<Car, ImageView> carImageViewMap = new HashMap<>();
     public void moveCar(Car car, List<Node> path) {
         Task<Void> task = new Task<>() {
             @Override
@@ -245,11 +250,21 @@ public class TrafficMapController {
                 CountDownLatch latch = new CountDownLatch(path.size());
 
                 Platform.runLater(() -> {
-                    Circle circle = new Circle(car.getStart().getX(), car.getStart().getY(), 8);
-                    circle.setStroke(Color.web(car.getColor()));
-                    circle.setFill(Color.web(car.getColor()));
-                    centerAnchorPane.getChildren().add(circle);
-                    carCircleMap.put(car, circle);
+                    ImageView carImageView = car.getCarImageView();
+                    double carSize = 16;
+
+                    carImageView.setFitWidth(carSize);
+                    carImageView.setFitHeight(carSize);
+
+                    double carX = car.getStart().getX() - carSize / 2; // Calculate the X coordinate for the car image
+                    double carY = car.getStart().getY() - carSize / 2; // Calculate the Y coordinate for the car image
+
+                    carImageView.setLayoutX(carX);
+                    carImageView.setLayoutY(carY);
+
+                    centerAnchorPane.getChildren().add(carImageView);
+
+                    carImageViewMap.put(car, carImageView);
                     latch.countDown();
                 });
 
@@ -273,16 +288,24 @@ public class TrafficMapController {
                     }
 
                     Platform.runLater(() -> {
-                        //System.out.println("Car: " + car.getName() + ", Current Node: " + currentNode);
 
-                        Circle previousCircle = carCircleMap.get(car);
-                        centerAnchorPane.getChildren().remove(previousCircle);
+                        ImageView previousImageView = carImageViewMap.get(car);
+                        centerAnchorPane.getChildren().remove(previousImageView);
 
-                        Circle circle = new Circle(currentNode.getX(), currentNode.getY(), 8);
-                        circle.setStroke(Color.web(car.getColor()));
-                        circle.setFill(Color.web(car.getColor()));
-                        centerAnchorPane.getChildren().add(circle);
-                        carCircleMap.put(car, circle);
+                        ImageView carImageView = car.getCarImageView();
+                        double carSize = 16;
+
+                        carImageView.setFitWidth(carSize);
+                        carImageView.setFitHeight(carSize);
+
+                        double carX = currentNode.getX() - carSize / 2; // Calculate the X coordinate for the car image
+                        double carY = currentNode.getY() - carSize / 2; // Calculate the Y coordinate for the car image
+
+                        carImageView.setLayoutX(carX);
+                        carImageView.setLayoutY(carY);
+
+                        centerAnchorPane.getChildren().add(carImageView);
+                        carImageViewMap.put(car, carImageView);
 
                         synchronized (previousNode) {
                             previousNode.setOccupied(false);
@@ -290,25 +313,20 @@ public class TrafficMapController {
                         }
 
 
-                        if(currentNode.equals(car.getDestination()))
-                        {
-                            //System.out.println("Car: " + car.getName() + ", Reached Destination");
+                        if(currentNode.equals(car.getDestination())) {
                             synchronized (currentNode) {
                                 currentNode.setOccupied(false);
                                 currentNode.notifyAll();
                             }
                             Platform.runLater(() -> {
-                                Circle circle1 = carCircleMap.get(car);
-                                centerAnchorPane.getChildren().remove(circle1);
-                                carCircleMap.remove(car);
+                                ImageView imageView1 = carImageViewMap.get(car);
+                                centerAnchorPane.getChildren().remove(imageView1);
+                                carImageViewMap.remove(car);
                             });
-
                         }
-
                         latch.countDown();
                     });
                 }
-
                 latch.await(); // Wait for all UI updates to complete
 
                 return null;
@@ -320,33 +338,40 @@ public class TrafficMapController {
         thread.start(); // Start the thread
     }
 
-    public void updateTrafficLight(TrafficLight trafficLight, int color){
+    private final Map<TrafficLight, Circle> trafficLightCircles = new HashMap<>();
+
+    public void updateTrafficLight(TrafficLight trafficLight, int color) {
         Platform.runLater(() -> {
-            Node node;
-            if(color == 0){ // 0 = red
-                node = trafficLight.getRed();
-            } else if(color == 1 || color == 3){ // 1,3 = yellow
-                node = trafficLight.getYellow();
+            Circle circle = trafficLightCircles.get(trafficLight);
+            if (circle != null) {
+                centerAnchorPane.getChildren().remove(circle);
             }
-            else{ // 2 = green
+
+            Node node;
+            if (color == 0) {                          // 0 = red
+                node = trafficLight.getRed();
+            } else if (color == 1 || color == 3) {     // 1,3 = yellow
+                node = trafficLight.getYellow();
+            } else {                                   // 2 = green
                 node = trafficLight.getGreen();
             }
 
-            Circle circle = new Circle(node.getX(), node.getY(), 5);
-            if(color == 0){  // 0 = red
-                circle.setStroke(Color.web("#ff0000"));
-                circle.fillProperty().setValue(Color.web("#ff0000"));
+            Circle newCircle = new Circle(node.getX(), node.getY(), 5);
+            if (color == 0) {
+                newCircle.setStroke(Color.web("#ff0000"));
+                newCircle.setFill(Color.web("#ff0000"));
+            } else if (color == 1 || color == 3) {
+                newCircle.setStroke(Color.web("#ffff00"));
+                newCircle.setFill(Color.web("#ffff00"));
+            } else {
+                newCircle.setStroke(Color.web("#00ff00"));
+                newCircle.setFill(Color.web("#00ff00"));
             }
-            else if(color == 1 || color == 3){ // 1,3 = yellow
-                circle.setStroke(Color.web("#ffff00"));
-                circle.fillProperty().setValue(Color.web("#ffff00"));
-            }
-            else { // 2 = green
-                circle.setStroke(Color.web("#00ff00"));
-                circle.fillProperty().setValue(Color.web("#00ff00"));
-            }
-            centerAnchorPane.getChildren().add(circle);
+
+            centerAnchorPane.getChildren().add(newCircle);
+            trafficLightCircles.put(trafficLight, newCircle);
         });
     }
+
 
 }
