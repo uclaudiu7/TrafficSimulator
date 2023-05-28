@@ -2,6 +2,7 @@ package com.example.trafficsimulator.models;
 
 import com.example.trafficsimulator.scenes.TrafficMap;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,35 +39,36 @@ public class Simulation {
         DatabaseManager databaseManager = new DatabaseManager();
         trafficLights = databaseManager.loadTrafficLights(zone);
 
-        int i = 1;
-        for (Node node : trafficLights) {
-            System.out.println("Semafor: " + i++ + ": " + node + " color: " + node.getTrafficLightColor());
-        }
-
+        int j = 1;
+//        for (Node node : trafficLights) {
+//            System.out.println("Semafor: " + j++ + ": " + node + " color: " + node.getTrafficLightColor());
+//        }
+         j = 1;
         for (Node node : trafficLights) {
             int index = nodes.indexOf(node);
             nodes.get(index).setTrafficLightColor(node.getTrafficLightColor());
+            System.out.println("Semafor: " + j++  + " index: "+ index+ ": " + node + " color: " + node.getTrafficLightColor());
         }
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while (true) {
-                    // for inversam culorile
+        Thread thread = new Thread(() -> {
+            while (true) {
+                // for inversam culorile
                     int i = 1;
                     for (Node node : trafficLights) {
+                        Time time = new Time(System.currentTimeMillis());
+
                         int index = nodes.indexOf(node);
                         if (nodes.get(index).getTrafficLightColor().equals("red")) {
-                            try {
-                                Thread.sleep(2000);
-                            } catch (InterruptedException e) {
+                            try{
+                                Thread.sleep(4000);
+                            }catch (InterruptedException e){
                                 throw new RuntimeException(e);
                             }
+
                             //System.out.println("Semafor: " + i + " has color: " + nodes.get(index).getTrafficLightColor());
 
                             nodes.get(index).setTrafficLightColor("green");
-                           // System.out.println("Semafor: " + i++ + " changed color: " + nodes.get(index).getTrafficLightColor());
-
+                            //System.out.println("Semafor: " + i++ + " changed color: " + nodes.get(index).getTrafficLightColor());
+                            System.out.println("Semafor: " + i++ +" index: "+ index +" at time: "+ time + " changed color: " + nodes.get(index).getTrafficLightColor());
                             synchronized (nodes.get(index)) {
                                 nodes.get(index).notifyAll();
                             }
@@ -78,7 +80,7 @@ public class Simulation {
                             synchronized (nodes.get(index)) {
                                 nodes.get(index).notifyAll();
                             }
-                            //System.out.println("Semafor: " + i++ + " changed color: " + nodes.get(index).getTrafficLightColor());
+                            System.out.println("Semafor: " + i++ +" index: "+ index +" at time: "+ time + " changed color: " + nodes.get(index).getTrafficLightColor());
 
                             try {
                                 Thread.sleep(4000);
@@ -93,7 +95,6 @@ public class Simulation {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                }
             }
         });
         thread.start();

@@ -257,7 +257,7 @@ public class TrafficMapController {
                 for (int i = 1; i < path.size(); i++) {
                     Node previousNode = path.get(i - 1);
                     Node currentNode = path.get(i);
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
 
                     synchronized (currentNode) {
                         while (currentNode.isOccupied() || currentNode.getTrafficLightColor().equals("red")) {
