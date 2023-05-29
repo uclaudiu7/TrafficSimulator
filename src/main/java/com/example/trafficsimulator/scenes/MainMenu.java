@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class MainMenu {
 
+    private static boolean styleInitialized = false;
     private final Stage stage;
     private final Scene scene;
 
@@ -20,7 +21,11 @@ public class MainMenu {
         scene = new Scene(fxmlLoader.load(), 800, 500);
         scene.getStylesheets().add(Objects.requireNonNull(TrafficSimulator.class.getResource("main-menu.css")).toExternalForm());
         stage.setTitle("Traffic Simulator");
-        stage.initStyle(StageStyle.UNDECORATED);
+
+        if(!styleInitialized) {
+            stage.initStyle(StageStyle.UNDECORATED);
+            styleInitialized = true;
+        }
     }
 
     public void show() {

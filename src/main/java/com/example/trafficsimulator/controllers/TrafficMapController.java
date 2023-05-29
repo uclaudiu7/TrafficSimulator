@@ -1,36 +1,26 @@
 package com.example.trafficsimulator.controllers;
 
 import com.example.trafficsimulator.models.*;
+import com.example.trafficsimulator.scenes.TrafficAnalysis;
 import com.example.trafficsimulator.scenes.TrafficMap;
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.File;
+import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
 
 public class TrafficMapController {
     private String zone;
@@ -39,7 +29,6 @@ public class TrafficMapController {
     private Node node1;
     private Node node2;
     private int clickCount = 0;
-
     private TrafficMap trafficMap;
 
     @FXML private AnchorPane topAnchorPane;
@@ -55,7 +44,6 @@ public class TrafficMapController {
     @FXML private Button twoSpeedButton;
     @FXML private Button fiveSpeedButton;
     @FXML private Button exitButton;
-    @FXML private Button loadButton;
 
     @FXML
     private void initialize() {
@@ -75,11 +63,42 @@ public class TrafficMapController {
         stage.close();
     }
 
-    public void pauseButtonAction() {
-        //TODO: Implement
-//        DatabaseManager databaseManager = new DatabaseManager();
-//        databaseManager.insertNodes(nodes, zone);
-//        databaseManager.insertEdges(edges, zone);
+    public void stopButtonAction() throws IOException {
+        List<Car> cars = trafficMap.getSimulation().getCars();
+        long averageRunningTime = 0;
+        long averageWaitingTime = 0;
+        int carsArrived = 0;
+
+        for(Car car : cars) {
+            car.setRunning(false);
+            car.interrupt();
+        }
+
+        for(Car car : cars) {
+            if(car.isArrived()) {
+                carsArrived++;
+                averageRunningTime += car.getRunningTime();
+                averageWaitingTime += car.getWaitingTime();
+            }
+        }
+
+        System.out.println("Simulation stopped!");
+        for(Car car : cars){
+            System.out.println(car.getName() + " arrived in: " + car.getRunningTime()/1000 + " seconds, total wait: " + car.getWaitingTime()/1000 + " seconds");
+        }
+
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        stage.close();
+
+        TrafficAnalysis trafficAnalysis = new TrafficAnalysis(stage, zone, carsArrived, averageRunningTime, averageWaitingTime);
+        trafficAnalysis.show();
+
     }
 
     public void loadButtonAction() {
@@ -97,10 +116,10 @@ public class TrafficMapController {
 
     public void oneSpeedButtonAction() {
         //TODO: Implement
-        closestNodeListener();
+        //closestNodeListener();
 //        Node added: [788.8, 424.0] jos
 //        Node added: [784.8, 418.4] sus
-        //mapNodesListener();
+        mapNodesListener();
     }
 
     public void twoSpeedButtonAction() {
@@ -241,13 +260,13 @@ public class TrafficMapController {
     public void setTrafficMap(TrafficMap trafficMap) {
         this.trafficMap = trafficMap;
     }
-    private Map<Car, Circle> carCircleMap = new HashMap<>();
     private Map<Car, ImageView> carImageViewMap = new HashMap<>();
     public void moveCar(Car car, List<Node> path) {
-        Task<Void> task = new Task<>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 CountDownLatch latch = new CountDownLatch(path.size());
+                long startTime = System.currentTimeMillis();
 
                 Platform.runLater(() -> {
                     ImageView carImageView = car.getCarImageView();
@@ -274,7 +293,8 @@ public class TrafficMapController {
                     Thread.sleep(200);
 
                     synchronized (currentNode) {
-                        while (currentNode.isOccupied() || currentNode.getTrafficLightColor() != 2) { // 2 = green
+                        long start = System.currentTimeMillis();
+                        while (currentNode.isOccupied() || currentNode.getTrafficLightColor() != 2 || !car.isRunning()) { // 2 = green
                             try {
                                 currentNode.wait();
                             } catch (InterruptedException e) {
@@ -282,6 +302,8 @@ public class TrafficMapController {
                             }
                         }
 
+                        long end = System.currentTimeMillis();
+                        car.addWaitingTime(end - start);
                         // Mark the current node as occupied by the car
                         currentNode.setOccupied(true);
                         currentNode.setOccupiedBy(car);
@@ -323,6 +345,10 @@ public class TrafficMapController {
                                 centerAnchorPane.getChildren().remove(imageView1);
                                 carImageViewMap.remove(car);
                             });
+                            cancel();
+                            long endTime = System.currentTimeMillis();
+                            car.setArrived(true);
+                            car.setRunningTime(endTime - startTime);
                         }
                         latch.countDown();
                     });

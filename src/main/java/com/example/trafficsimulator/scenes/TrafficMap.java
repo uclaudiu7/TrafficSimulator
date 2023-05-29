@@ -29,7 +29,6 @@ public class TrafficMap {
         this.zone = zone;
 
         FXMLLoader fxmlLoader = new FXMLLoader(TrafficSimulator.class.getResource("traffic-map.fxml"));
-        //Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         scene = new Scene(fxmlLoader.load(), 1536, 864);
         scene.getStylesheets().add(Objects.requireNonNull(TrafficSimulator.class.getResource("traffic-map.css")).toExternalForm());
         stage.setTitle(zone + " Traffic Map");

@@ -13,6 +13,7 @@ public class Node {
     private Car occupant;
     private int trafficLightColor; // 0 = red, 1 = yellow, 2 = green, 3 = yellow
     private int trafficLightId;
+    private boolean paused;
 
     public Node(double x, double y) {
         this.x = x;
@@ -22,6 +23,7 @@ public class Node {
         this.lock = new Object();
         this.occupant = null;
         this.trafficLightColor = 2;
+        this.paused = false;
     }
 
     @Override
@@ -146,5 +148,18 @@ public class Node {
             occupant = car;
         }
     }
+
+    public boolean isPaused() {
+        synchronized (lock) {
+            return paused;
+        }
+    }
+
+    public void setPaused() {
+        synchronized (lock) {
+            this.paused = !paused;
+        }
+    }
+
 }
 

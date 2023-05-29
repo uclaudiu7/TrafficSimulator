@@ -27,7 +27,7 @@
    <bottom>
       <AnchorPane fx:id="bottomAnchorPane" prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: #2b2b2b;" BorderPane.alignment="CENTER">
          <children>
-            <ToggleButton fx:id="pauseButton" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onAction="#pauseButtonAction" style="-fx-background-color: #444444;" text="Pause/Resume Simulation" textFill="WHITE">
+            <ToggleButton fx:id="stopButton" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #444444;" text="Stop Simulation" textFill="WHITE">
                <effect>
                   <DropShadow />
                </effect></ToggleButton>
@@ -46,7 +46,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="loadButton" layoutX="182.0" layoutY="6.0" mnemonicParsing="false" onAction="#loadButtonAction" style="-fx-background-color: #444444;" text="load" textFill="WHITE">
+            <Button fx:id="loadButton" layoutX="155.0" layoutY="6.0" mnemonicParsing="false" onAction="#loadButtonAction" style="-fx-background-color: #444444;" text="Load Graph" textFill="WHITE">
                <effect>
                   <DropShadow />
                </effect>

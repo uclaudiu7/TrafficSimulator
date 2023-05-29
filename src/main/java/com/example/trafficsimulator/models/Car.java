@@ -16,6 +16,9 @@ public class Car extends Thread {
     private Node current;
     private final Node destination;
     private List<Node> path;
+    private long runningTime;
+    private long waitingTime;
+    private boolean arrived;
     private boolean running;
     private final String color;
     private ImageView carImageView;
@@ -30,6 +33,8 @@ public class Car extends Thread {
         }
         color = hex.toString();
         running = true;
+        arrived = false;
+        waitingTime = 0;
         generateRandomImage();
     }
 
@@ -94,10 +99,33 @@ public class Car extends Thread {
     public void setTrafficMapController(TrafficMapController trafficMapController){
         this.trafficMapController = trafficMapController;
     }
-    public void setRunning(boolean running) { this.running = running; }
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+    public boolean isRunning() {
+        return running;
+    }
+    public void addWaitingTime(long waitingTime) {
+        this.waitingTime += waitingTime;
+    }
+    public long getRunningTime() {
+        return runningTime;
+    }
+    public void setRunningTime(long runningTime) {
+        this.runningTime = runningTime;
+    }
+    public long getWaitingTime() {
+        return waitingTime;
+    }
+
     public Node getStart() { return start; }
     public void setStart(Node start) { this.start = start; }
     public String getColor() { return color; }
     public Node getDestination() { return destination; }
-
+    public void setArrived(boolean b) {
+        this.arrived = true;
+    }
+    public boolean isArrived() {
+        return arrived;
+    }
 }

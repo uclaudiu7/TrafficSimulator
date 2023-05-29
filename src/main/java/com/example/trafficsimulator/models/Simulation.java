@@ -186,4 +186,8 @@ public class Simulation {
             }
         }
     }
+
+    public List<Car> getCars() {
+        return cars;
+    }
 }
