@@ -145,7 +145,7 @@ public class Simulation {
             Node start = nodes.get(index);
 
             List<Node> reachableNodes = start.getReachableNodes();
-            while(reachableNodes.size() == 0){
+            while(reachableNodes.size() == 0 || start.isOccupied()){
                 index = random.nextInt(upperbound);
                 start = nodes.get(index);
                 reachableNodes = start.getReachableNodes();
@@ -154,6 +154,8 @@ public class Simulation {
             Node end = reachableNodes.get(index2);
 
             Car car = new Car("Car " + i, start, end);
+
+            start.setOccupied(true);
             car.setTrafficMapController(trafficMap.getTrafficMapController());
 
             carList.add(car);

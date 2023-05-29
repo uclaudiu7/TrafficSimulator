@@ -37,7 +37,7 @@ public class MainMenuController {
                 zoneChoiceBox.getSelectionModel().selectFirst();
 
                 // Set default value for carsSpinner, and set a min and max value
-                carsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 200, 1));
+                carsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 1));
 
                 // Set default value for intensitySlider, and add a listener to update the value on drag
                 intensitySlider.setOnMouseDragged(e -> intensitySlider.setValue((int) intensitySlider.getValue()));

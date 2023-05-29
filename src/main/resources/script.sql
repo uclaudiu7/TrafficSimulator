@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 28, 2023 at 11:03 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Gazdă: 127.0.0.1
+-- Timp de generare: mai 29, 2023 la 12:07 PM
+-- Versiune server: 10.4.28-MariaDB
+-- Versiune PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `traffic_simulator`
+-- Bază de date: `traffic_simulator`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `edges_eminescu`
+-- Structură tabel pentru tabel `edges_eminescu`
 --
 
 CREATE TABLE `edges_eminescu` (
@@ -35,7 +35,7 @@ CREATE TABLE `edges_eminescu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `edges_eminescu`
+-- Eliminarea datelor din tabel `edges_eminescu`
 --
 
 INSERT INTO `edges_eminescu` (`x1`, `y1`, `x2`, `y2`) VALUES
@@ -633,7 +633,7 @@ INSERT INTO `edges_eminescu` (`x1`, `y1`, `x2`, `y2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `edges_pasarela`
+-- Structură tabel pentru tabel `edges_pasarela`
 --
 
 CREATE TABLE `edges_pasarela` (
@@ -644,7 +644,7 @@ CREATE TABLE `edges_pasarela` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `edges_pasarela`
+-- Eliminarea datelor din tabel `edges_pasarela`
 --
 
 INSERT INTO `edges_pasarela` (`x1`, `y1`, `x2`, `y2`) VALUES
@@ -1116,7 +1116,7 @@ INSERT INTO `edges_pasarela` (`x1`, `y1`, `x2`, `y2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `edges_uaic`
+-- Structură tabel pentru tabel `edges_uaic`
 --
 
 CREATE TABLE `edges_uaic` (
@@ -1127,7 +1127,7 @@ CREATE TABLE `edges_uaic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `edges_uaic`
+-- Eliminarea datelor din tabel `edges_uaic`
 --
 
 INSERT INTO `edges_uaic` (`x1`, `y1`, `x2`, `y2`) VALUES
@@ -1402,7 +1402,7 @@ INSERT INTO `edges_uaic` (`x1`, `y1`, `x2`, `y2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_eminescu`
+-- Structură tabel pentru tabel `lights_eminescu`
 --
 
 CREATE TABLE `lights_eminescu` (
@@ -1415,7 +1415,7 @@ CREATE TABLE `lights_eminescu` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_pasarela`
+-- Structură tabel pentru tabel `lights_pasarela`
 --
 
 CREATE TABLE `lights_pasarela` (
@@ -1425,10 +1425,28 @@ CREATE TABLE `lights_pasarela` (
                                    `light_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Eliminarea datelor din tabel `lights_pasarela`
+--
+
+INSERT INTO `lights_pasarela` (`x`, `y`, `light`, `light_id`) VALUES
+                                                                  (836.8, 380.8, 1, 1),
+                                                                  (778.4, 370.4, 1, 2),
+                                                                  (474.4, 236, 1, 4),
+                                                                  (434.4, 237.60000000000002, 1, 5),
+                                                                  (452.8, 251.2, 0, 6),
+                                                                  (284, 510.4, 1, 7),
+                                                                  (273.6, 483.20000000000005, 0, 8),
+                                                                  (243.2, 507.20000000000005, 1, 9),
+                                                                  (742.4, 490.4, 0, 10),
+                                                                  (737.6, 449.6, 1, 11),
+                                                                  (712, 504, 1, 12),
+                                                                  (803.2, 390.4, 0, 3);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_pos_eminescu`
+-- Structură tabel pentru tabel `lights_pos_eminescu`
 --
 
 CREATE TABLE `lights_pos_eminescu` (
@@ -1440,7 +1458,7 @@ CREATE TABLE `lights_pos_eminescu` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_pos_pasarela`
+-- Structură tabel pentru tabel `lights_pos_pasarela`
 --
 
 CREATE TABLE `lights_pos_pasarela` (
@@ -1449,10 +1467,52 @@ CREATE TABLE `lights_pos_pasarela` (
                                        `light_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Eliminarea datelor din tabel `lights_pos_pasarela`
+--
+
+INSERT INTO `lights_pos_pasarela` (`x`, `y`, `light_id`) VALUES
+                                                             (834, 362, 1),
+                                                             (845, 368, 1),
+                                                             (855, 372, 1),
+                                                             (762, 386, 2),
+                                                             (752, 380, 2),
+                                                             (742, 375, 2),
+                                                             (820, 406, 3),
+                                                             (815, 416, 3),
+                                                             (808, 424, 3),
+                                                             (479, 219, 4),
+                                                             (491, 222, 4),
+                                                             (502, 225, 4),
+                                                             (426, 260, 5),
+                                                             (415, 256, 5),
+                                                             (403, 252, 5),
+                                                             (469, 261, 6),
+                                                             (463, 271, 6),
+                                                             (456, 280, 6),
+                                                             (295, 494, 7),
+                                                             (306, 499, 7),
+                                                             (317, 503, 7),
+                                                             (255, 486, 8),
+                                                             (262, 478, 8),
+                                                             (269, 469, 8),
+                                                             (246, 525, 9),
+                                                             (235, 521, 9),
+                                                             (224, 517, 9),
+                                                             (754, 483, 10),
+                                                             (765, 489, 10),
+                                                             (776, 495, 10),
+                                                             (698, 463, 11),
+                                                             (705, 454, 11),
+                                                             (712, 446, 11),
+                                                             (732, 518, 12),
+                                                             (725, 527, 12),
+                                                             (718, 535, 12);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_pos_uaic`
+-- Structură tabel pentru tabel `lights_pos_uaic`
 --
 
 CREATE TABLE `lights_pos_uaic` (
@@ -1462,7 +1522,7 @@ CREATE TABLE `lights_pos_uaic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `lights_pos_uaic`
+-- Eliminarea datelor din tabel `lights_pos_uaic`
 --
 
 INSERT INTO `lights_pos_uaic` (`x`, `y`, `light_id`) VALUES
@@ -1482,7 +1542,7 @@ INSERT INTO `lights_pos_uaic` (`x`, `y`, `light_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lights_uaic`
+-- Structură tabel pentru tabel `lights_uaic`
 --
 
 CREATE TABLE `lights_uaic` (
@@ -1493,7 +1553,7 @@ CREATE TABLE `lights_uaic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `lights_uaic`
+-- Eliminarea datelor din tabel `lights_uaic`
 --
 
 INSERT INTO `lights_uaic` (`x`, `y`, `light`, `light_id`) VALUES
@@ -1505,7 +1565,7 @@ INSERT INTO `lights_uaic` (`x`, `y`, `light`, `light_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nodes_eminescu`
+-- Structură tabel pentru tabel `nodes_eminescu`
 --
 
 CREATE TABLE `nodes_eminescu` (
@@ -1514,7 +1574,7 @@ CREATE TABLE `nodes_eminescu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `nodes_eminescu`
+-- Eliminarea datelor din tabel `nodes_eminescu`
 --
 
 INSERT INTO `nodes_eminescu` (`x`, `y`) VALUES
@@ -2102,7 +2162,7 @@ INSERT INTO `nodes_eminescu` (`x`, `y`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nodes_pasarela`
+-- Structură tabel pentru tabel `nodes_pasarela`
 --
 
 CREATE TABLE `nodes_pasarela` (
@@ -2111,7 +2171,7 @@ CREATE TABLE `nodes_pasarela` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `nodes_pasarela`
+-- Eliminarea datelor din tabel `nodes_pasarela`
 --
 
 INSERT INTO `nodes_pasarela` (`x`, `y`) VALUES
@@ -2567,7 +2627,7 @@ INSERT INTO `nodes_pasarela` (`x`, `y`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nodes_uaic`
+-- Structură tabel pentru tabel `nodes_uaic`
 --
 
 CREATE TABLE `nodes_uaic` (
@@ -2577,7 +2637,7 @@ CREATE TABLE `nodes_uaic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `nodes_uaic`
+-- Eliminarea datelor din tabel `nodes_uaic`
 --
 
 INSERT INTO `nodes_uaic` (`x`, `y`, `id`) VALUES
@@ -2841,21 +2901,21 @@ INSERT INTO `nodes_uaic` (`x`, `y`, `id`) VALUES
                                               (788.8, 424, 258);
 
 --
--- Indexes for dumped tables
+-- Indexuri pentru tabele eliminate
 --
 
 --
--- Indexes for table `nodes_uaic`
+-- Indexuri pentru tabele `nodes_uaic`
 --
 ALTER TABLE `nodes_uaic`
     ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pentru tabele eliminate
 --
 
 --
--- AUTO_INCREMENT for table `nodes_uaic`
+-- AUTO_INCREMENT pentru tabele `nodes_uaic`
 --
 ALTER TABLE `nodes_uaic`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
