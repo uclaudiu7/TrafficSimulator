@@ -35,7 +35,6 @@ public class TrafficMap {
 
         TrafficMapController controller = fxmlLoader.getController();
         controller.setZoneLabel("Zone: " + zone);
-        System.out.println("Zone1: " + zone);
         controller.setCarsLabel("Cars: " + cars);
         String oneDecimalIntensity = String.format("%.1f", intensity);
         controller.setIntensityLabel("Intensity: " + oneDecimalIntensity + "%");

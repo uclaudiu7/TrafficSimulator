@@ -59,16 +59,12 @@ public class MainMenuController {
                 stage.close();
         }
 
-        public void startButtonAction() throws IOException, SQLException {
-                System.out.println("Zone: " + zoneChoiceBox.getValue());
-                System.out.println("Cars: " + carsSpinner.getValue());
-                System.out.println("Intensity: " + intensitySlider.getValue());
-                System.out.println("Hazard: " + hazardSlider.getValue());
-
+        public void startButtonAction() throws IOException {
                 Stage stage = (Stage) startButton.getScene().getWindow();
                 stage.close();
                 TrafficMap trafficMap = new TrafficMap(stage, zoneChoiceBox.getValue(), carsSpinner.getValue(), intensitySlider.getValue(), hazardSlider.getValue());
                 trafficMap.show();
+                trafficMap.beginSimulation();
         }
 
 }

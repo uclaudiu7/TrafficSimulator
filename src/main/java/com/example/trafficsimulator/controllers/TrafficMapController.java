@@ -65,8 +65,8 @@ public class TrafficMapController {
 
     public void stopButtonAction() throws IOException {
         List<Car> cars = trafficMap.getSimulation().getCars();
-        long averageRunningTime = 0;
-        long averageWaitingTime = 0;
+        double averageRunningTime = 0;
+        double averageWaitingTime = 0;
         int carsArrived = 0;
 
         for(Car car : cars) {
@@ -81,6 +81,9 @@ public class TrafficMapController {
                 averageWaitingTime += car.getWaitingTime();
             }
         }
+
+        averageRunningTime = averageRunningTime/(carsArrived* 1000);
+        averageWaitingTime = averageWaitingTime/(carsArrived* 1000);
 
         System.out.println("Simulation stopped!");
         for(Car car : cars){
@@ -117,20 +120,16 @@ public class TrafficMapController {
     public void oneSpeedButtonAction() {
         //TODO: Implement
         //closestNodeListener();
-//        Node added: [788.8, 424.0] jos
-//        Node added: [784.8, 418.4] sus
         mapNodesListener();
     }
 
     public void twoSpeedButtonAction() {
         //TODO: Implement
-        //getTrafficLights();
         //mapEdgesListener();
     }
 
     public void fiveSpeedButtonAction() {
         //TODO: Implement
-        trafficMap.beginSimulation();
     }
 
     public void setZoneLabel(String text) {
@@ -159,10 +158,6 @@ public class TrafficMapController {
         else
             background = new Image(Objects.requireNonNull(getClass().getResource("/images/eminescu.png")).toString());
         centerAnchorPane.setStyle("-fx-background-image: url('" + background.getUrl() + "'); ");
-    }
-
-    public void getTrafficLights(){
-        trafficMap.getSimulation().printTrafficLights();
     }
 
     public void closestNodeListener(){

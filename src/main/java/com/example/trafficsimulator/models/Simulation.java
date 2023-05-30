@@ -106,16 +106,6 @@ public class Simulation {
         timer.schedule(timerTask, 0, period);
     }
 
-    public void printTrafficLights(){
-        System.out.println("--------------------");
-        System.out.println("Traffic lights: ");
-        for(Node node : trafficLights){
-            int index = nodes.indexOf(node);
-            System.out.println(nodes.get(index) + " " + nodes.get(index).getTrafficLightColor());
-        }
-        System.out.println("--------------------");
-    }
-
     public void setNeighbours(){
         for(Edge edge : edges){
             Node start = edge.getStart();

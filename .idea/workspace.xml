@@ -4,19 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[added] new traffic light timer, cars instead of dots">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficAnalysisController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficAnalysis.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-analysis.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="78f1f7ad-bb62-497e-8011-78f5cb8b3d58" name="Changes" comment="[added] traffic analysis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/MainMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficAnalysisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficAnalysisController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/controllers/TrafficMapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/models/Simulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/MainMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/car.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/trafficsimulator/traffic-map.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficAnalysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficAnalysis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/trafficsimulator/scenes/TrafficMap.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +130,11 @@
       <workItem from="1685287122173" duration="9533000" />
       <workItem from="1685296837822" duration="1255000" />
       <workItem from="1685298107997" duration="14575000" />
-      <workItem from="1685350627260" duration="10116000" />
+      <workItem from="1685350627260" duration="13012000" />
+      <workItem from="1685366703121" duration="30000" />
+      <workItem from="1685366745999" duration="153000" />
+      <workItem from="1685367610186" duration="111000" />
+      <workItem from="1685380639490" duration="1230000" />
     </task>
     <task id="LOCAL-00001" summary="added traffic maps, fully working GUI">
       <created>1684020251166</created>
@@ -193,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685313489961</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="[added] traffic analysis">
+      <created>1685363809707</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1685363809707</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -219,6 +225,7 @@
     <MESSAGE value="[UPDATE] added traffic lights (with minor bugs)" />
     <MESSAGE value="[UPDATE] fixed traffic light timing" />
     <MESSAGE value="[added] new traffic light timer, cars instead of dots" />
-    <option name="LAST_COMMIT_MESSAGE" value="[added] new traffic light timer, cars instead of dots" />
+    <MESSAGE value="[added] traffic analysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="[added] traffic analysis" />
   </component>
 </project>
