@@ -1,61 +1,60 @@
 package com.example.trafficsimulator.models;
 
 import com.example.trafficsimulator.scenes.TrafficMap;
-import javafx.application.Platform;
 
-import java.sql.Time;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Simulation {
     private final TrafficMap trafficMap;
     private final String zone;
     private final int numberOfCars;
-    private final double intensity;
-    private final double hazard;
-    private int[][] map;
+    private final double speed;
     private final Graph graph;
     private final List<Node> nodes;
-    private List<Node> trafficLights;
     private List<TrafficLight> trafficLightPositions;
     private final List<Edge> edges;
-    private List<Car> cars;
+    private final List<Car> cars;
+    private final List<Car> finishedCars;
 
-    public Simulation(String zone, int numberOfCars, double intensity, double hazard, TrafficMap trafficMap) {
+    public Simulation(String zone, int numberOfCars, double intensity, TrafficMap trafficMap) {
         this.zone = zone;
         this.numberOfCars = numberOfCars;
-        this.intensity = intensity;
-        this.hazard = hazard;
+        this.speed = intensity;
         this.trafficMap = trafficMap;
+        finishedCars = new ArrayList<>();
         nodes = trafficMap.getTrafficMapController().getNodes();
         edges = trafficMap.getTrafficMapController().getEdges();
-        graph = new Graph(nodes, edges, cars);
+        graph = new Graph(nodes, edges);
         setNeighbours();
         setReachableNodes();
         cars = generateCars();
         setTrafficLights();
+        setSigns();
+    }
+
+    public void setSigns(){
+        DatabaseManager databaseManager = new DatabaseManager();
+        List<Node> signs = databaseManager.loadSigns(zone);
+
+        for(Node sign : signs){
+            int index = nodes.indexOf(sign);
+            nodes.get(index).setIsSign(1);
+        }
     }
 
     public void setTrafficLights() {
         DatabaseManager databaseManager = new DatabaseManager();
-        trafficLights = databaseManager.loadTrafficLights(zone);
+        List<Node> trafficLights = databaseManager.loadTrafficLights(zone);
         trafficLightPositions = databaseManager.loadTrafficLightPositions(zone);
-
-        for(TrafficLight trafficLight : trafficLightPositions){
-            System.out.println(trafficLight);
-        }
 
         for (Node node : trafficLights) {
             int index = nodes.indexOf(node);
             nodes.get(index).setTrafficLightColor(node.getTrafficLightColor());
             nodes.get(index).setTrafficLightId(node.getTrafficLightId());
-            System.out.println("Semafor id: " + node.getTrafficLightId() + " index: "+ index+ ": " + node + " color: " + node.getTrafficLightColor());
         }
 
         for(Node node : trafficLights){
-            Thread thread = new Thread(() -> {
-                scheduleTrafficLights(node, 10000);
-            });
+            Thread thread = new Thread(() -> Simulation.this.scheduleTrafficLights(node, 10000 / (long) speed));
             thread.start();
         }
     }
@@ -83,10 +82,10 @@ public class Simulation {
                     TimerTask newTimerTask = new TimerTask() {
                         @Override
                         public void run() {
-                            scheduleTrafficLights(node, 2000);
+                            scheduleTrafficLights(node, 2000 / (long) speed);
                         }
                     };
-                    newTimer.schedule(newTimerTask, 2000);
+                    newTimer.schedule(newTimerTask, 2000 / (long) speed);
                 } else {
                     cancel();
 
@@ -95,10 +94,10 @@ public class Simulation {
                     TimerTask newTimerTask = new TimerTask() {
                         @Override
                         public void run() {
-                            scheduleTrafficLights(node,10000);
+                            scheduleTrafficLights(node,10000 / (long) speed);
                         }
                     };
-                    newTimer.schedule(newTimerTask, 10000);
+                    newTimer.schedule(newTimerTask, 10000 / (long) speed);
                 }
             }
         };
@@ -143,7 +142,7 @@ public class Simulation {
             int index2 = random.nextInt(reachableNodes.size());
             Node end = reachableNodes.get(index2);
 
-            Car car = new Car("Car " + i, start, end);
+            Car car = new Car(start, end);
 
             start.setOccupied(true);
             car.setTrafficMapController(trafficMap.getTrafficMapController());
@@ -154,30 +153,46 @@ public class Simulation {
         return carList;
     }
 
+    public void addCar(){
+        Random random = new Random();
+        int upperbound = nodes.size();
+        int index = random.nextInt(upperbound);
+        Node start = nodes.get(index);
+
+        List<Node> reachableNodes = start.getReachableNodes();
+        while(reachableNodes.size() == 0 || start.isOccupied()){
+            index = random.nextInt(upperbound);
+            start = nodes.get(index);
+            reachableNodes = start.getReachableNodes();
+        }
+        int index2 = random.nextInt(reachableNodes.size());
+        Node end = reachableNodes.get(index2);
+
+        Car car = new Car(start, end);
+
+        start.setOccupied(true);
+        car.setTrafficMapController(trafficMap.getTrafficMapController());
+
+        cars.add(car);
+
+        List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
+        car.setPath(path);
+        car.start();
+    }
+
+    public void removeCar(Car car){
+        cars.remove(car);
+        finishedCars.add(car);
+        addCar();
+    }
+
     public void start(){
-        int i = 0;
         for(Car car : cars){
-            //System.out.println("Car " + i++ + " is moving from " + car.getStart() + " to " + car.getDestination());
             List<Node> path = graph.getShortestPath(car.getStart(), car.getDestination());
             car.setPath(path);
-            //drawPath(path, car);
             car.start();
         }
     }
+    public List<Car> getFinishedCars() { return finishedCars; }
 
-    public void drawPath(List<Node> path, Car car){
-        for(Node node : path){
-            if(node == path.get(0)){
-                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "start");
-            } else if(node == path.get(path.size()-1)){
-                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "end");
-            } else{
-//                trafficMap.getTrafficMapController().drawCar(node, car.getColor(), "mid");
-            }
-        }
-    }
-
-    public List<Car> getCars() {
-        return cars;
-    }
 }

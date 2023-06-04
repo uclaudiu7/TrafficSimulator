@@ -7,13 +7,13 @@ import java.util.Objects;
 public class Node {
     private final double x;
     private final double y;
+    private int isSign;
     private final List<Node> neighbours;
     private final List<Node> reachableNodes;
     private final Object lock;
     private Car occupant;
     private int trafficLightColor; // 0 = red, 1 = yellow, 2 = green, 3 = yellow
     private int trafficLightId;
-    private boolean paused;
 
     public Node(double x, double y) {
         this.x = x;
@@ -23,7 +23,7 @@ public class Node {
         this.lock = new Object();
         this.occupant = null;
         this.trafficLightColor = 2;
-        this.paused = false;
+        this.isSign = 0;
     }
 
     @Override
@@ -51,6 +51,9 @@ public class Node {
         return y;
     }
 
+    public void setIsSign(int isSign) { this.isSign = isSign; }
+    public int getIsSign() { return isSign; }
+
     public void setTrafficLightColor(int trafficLightColor) {
         synchronized (lock) {
             this.trafficLightColor = trafficLightColor;
@@ -63,7 +66,6 @@ public class Node {
         }
     }
     public void switchTrafficLightColor() {
-        System.out.println("Switching " + trafficLightId + " --> from " + trafficLightColor + " to " + (trafficLightColor + 1) % 4);
         synchronized (lock) {
             trafficLightColor = (trafficLightColor + 1) % 4;
         }
@@ -81,18 +83,6 @@ public class Node {
         }
     }
 
-    public void setOccupant(Car occupant) {
-        synchronized (lock) {
-            this.occupant = occupant;
-        }
-    }
-
-    public Car getOccupant() {
-        synchronized (lock) {
-            return occupant;
-        }
-    }
-
     public boolean isOccupied() {
         synchronized (lock) {
             return occupant != null;
@@ -105,10 +95,6 @@ public class Node {
                 occupant = null;
             }
         }
-    }
-
-    public Double distanceTo(Node node) {
-        return Math.sqrt(Math.pow(this.x - node.x, 2) + Math.pow(this.y - node.y, 2));
     }
 
     public void addReachableNodes(Node node, Node current) {
@@ -148,18 +134,5 @@ public class Node {
             occupant = car;
         }
     }
-
-    public boolean isPaused() {
-        synchronized (lock) {
-            return paused;
-        }
-    }
-
-    public void setPaused() {
-        synchronized (lock) {
-            this.paused = !paused;
-        }
-    }
-
 }
 

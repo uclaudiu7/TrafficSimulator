@@ -17,15 +17,13 @@ public class TrafficMap {
     private final Scene scene;
     private final String zone;
     private final int cars;
-    private final double intensity;
-    private final double hazard;
+    private final double speed;
     private Simulation simulation;
 
-    public TrafficMap(Stage stage, String zone, int cars, double intensity, double hazard) throws IOException {
+    public TrafficMap(Stage stage, String zone, int cars, double speed) throws IOException {
         this.stage = stage;
         this.cars = cars;
-        this.intensity = intensity;
-        this.hazard = hazard;
+        this.speed = speed;
         this.zone = zone;
 
         FXMLLoader fxmlLoader = new FXMLLoader(TrafficSimulator.class.getResource("traffic-map.fxml"));
@@ -36,10 +34,7 @@ public class TrafficMap {
         TrafficMapController controller = fxmlLoader.getController();
         controller.setZoneLabel("Zone: " + zone);
         controller.setCarsLabel("Cars: " + cars);
-        String oneDecimalIntensity = String.format("%.1f", intensity);
-        controller.setIntensityLabel("Intensity: " + oneDecimalIntensity + "%");
-        String oneDecimalHazard = String.format("%.1f", hazard);
-        controller.setHazardLabel("Hazard probability: " + oneDecimalHazard + "%");
+        controller.setIntensityLabel("Speed: " + (int)speed + "x");
         controller.setMap(zone);
 
         trafficMapController = fxmlLoader.getController();
@@ -56,11 +51,14 @@ public class TrafficMap {
     }
 
     public void beginSimulation() {
-        simulation = new Simulation(zone, cars, intensity, hazard, this);
+        simulation = new Simulation(zone, cars, speed, this);
         simulation.start();
     }
 
     public Simulation getSimulation() {
         return simulation;
     }
+
+    public double getSpeed() { return speed; }
+
 }

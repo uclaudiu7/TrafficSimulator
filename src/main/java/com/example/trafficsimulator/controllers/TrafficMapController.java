@@ -18,7 +18,6 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -26,9 +25,6 @@ public class TrafficMapController {
     private String zone;
     private Vector<Node> nodes = new Vector<>();
     private Vector<Line> edges = new Vector<>();
-    private Node node1;
-    private Node node2;
-    private int clickCount = 0;
     private TrafficMap trafficMap;
 
     @FXML private AnchorPane topAnchorPane;
@@ -37,20 +33,17 @@ public class TrafficMapController {
     @FXML private Label zoneLabel;
     @FXML private Label carsLabel;
     @FXML private Label intensityLabel;
-    @FXML private Label hazardLabel;
+    @FXML private Label poweredLabel;
 
-    @FXML private ToggleButton pauseButton;
-    @FXML private Button oneSpeedButton;
-    @FXML private Button twoSpeedButton;
-    @FXML private Button fiveSpeedButton;
+    @FXML private ToggleButton stopButton;
     @FXML private Button exitButton;
 
     @FXML
     private void initialize() {
-        exitButton.setLayoutX(1536 - 30);
-        fiveSpeedButton.setLayoutX(1536 - 30);
-        twoSpeedButton.setLayoutX(fiveSpeedButton.getLayoutX() - 40);
-        oneSpeedButton.setLayoutX(twoSpeedButton.getLayoutX() - 40);
+        exitButton.setLayoutX(1506);
+        stopButton.setLayoutX(703);
+        poweredLabel.setLayoutX(1330);
+
         topAnchorPane.setOnMousePressed(e ->topAnchorPane.setOnMouseDragged(e2 -> {
             Stage stage = (Stage) topAnchorPane.getScene().getWindow();
             stage.setX(e2.getScreenX() - e.getSceneX());
@@ -61,10 +54,11 @@ public class TrafficMapController {
     public void exitButtonAction() {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
+        System.exit(0);
     }
 
     public void stopButtonAction() throws IOException {
-        List<Car> cars = trafficMap.getSimulation().getCars();
+        List<Car> cars = trafficMap.getSimulation().getFinishedCars();
         double averageRunningTime = 0;
         double averageWaitingTime = 0;
         int carsArrived = 0;
@@ -84,11 +78,6 @@ public class TrafficMapController {
 
         averageRunningTime = averageRunningTime/(carsArrived* 1000);
         averageWaitingTime = averageWaitingTime/(carsArrived* 1000);
-
-        System.out.println("Simulation stopped!");
-        for(Car car : cars){
-            System.out.println(car.getName() + " arrived in: " + car.getRunningTime()/1000 + " seconds, total wait: " + car.getWaitingTime()/1000 + " seconds");
-        }
 
         try{
             Thread.sleep(1000);
@@ -117,21 +106,6 @@ public class TrafficMapController {
         }
     }
 
-    public void oneSpeedButtonAction() {
-        //TODO: Implement
-        //closestNodeListener();
-        mapNodesListener();
-    }
-
-    public void twoSpeedButtonAction() {
-        //TODO: Implement
-        //mapEdgesListener();
-    }
-
-    public void fiveSpeedButtonAction() {
-        //TODO: Implement
-    }
-
     public void setZoneLabel(String text) {
         zoneLabel.setText(text);
     }
@@ -144,9 +118,6 @@ public class TrafficMapController {
         intensityLabel.setText(text);
     }
 
-    public void setHazardLabel(String text) {
-        hazardLabel.setText(text);
-    }
 
     public void setMap(String zone){
         this.zone = zone;
@@ -160,26 +131,64 @@ public class TrafficMapController {
         centerAnchorPane.setStyle("-fx-background-image: url('" + background.getUrl() + "'); ");
     }
 
-    public void closestNodeListener(){
-        centerAnchorPane.setOnMouseClicked(event -> {
-            Node temp = new Node(event.getX(), event.getY());
-            Node closest = nodes.get(0);
-            for(Node node : nodes) {
-                if(node.distanceTo(temp) < closest.distanceTo(temp))
-                    closest = node;
-            }
-            System.out.println("Closest node: " + closest);
-        });
-    }
-
-    public void mapNodesListener(){
-        centerAnchorPane.setOnMouseClicked(event -> {
-            Node node = new Node(event.getX(), event.getY());
-            nodes.add(node);
-            System.out.println("Node added: " + node);
-            drawNode(node);
-        });
-    }
+/**                 Code used for graph generation
+//
+//    private Node node1;
+//    private Node node2;
+//    private int clickCount = 0;
+//
+//    public void closestNodeListener(){
+//        centerAnchorPane.setOnMouseClicked(event -> {
+//            Node temp = new Node(event.getX(), event.getY());
+//            Node closest = nodes.get(0);
+//            for(Node node : nodes) {
+//                if(node.distanceTo(temp) < closest.distanceTo(temp))
+//                    closest = node;
+//            }
+//            System.out.println("Closest node: " + closest);
+//        });
+//    }
+//
+//    public void mapNodesListener(){
+//        centerAnchorPane.setOnMouseClicked(event -> {
+//            Node node = new Node(event.getX(), event.getY());
+//            nodes.add(node);
+//            System.out.println("Node added: " + node);
+//            drawNode(node);
+//        });
+//    }
+//
+//    public void mapEdgesListener() {
+//        centerAnchorPane.setOnMouseClicked(event -> {
+//            clickCount++;
+//            Node temp = new Node(event.getX(), event.getY());
+//            Node closest = nodes.get(0);
+//            for(Node node : nodes) {
+//                if(node.distanceTo(temp) < closest.distanceTo(temp))
+//                    closest = node;
+//            }
+//            if(clickCount % 2 == 1) {
+//                node1 = closest;
+//            }
+//            else {
+//                node2 = closest;
+//                System.out.println("Edge added: " + node1 + " " + node2);
+//                edges.add(new Line(node1.getX(), node1.getY(), node2.getX(), node2.getY()));
+//                drawEdge(node1, node2);
+//            }
+//        });
+//    }
+//
+//
+//    public void drawEdge(Node A, Node B) {
+//        if(A == null || B == null)
+//            return;
+//        Line line = new Line(A.getX(), A.getY(), B.getX(), B.getY());
+//        line.setStroke(Color.web("#b7b7b7"));
+//        centerAnchorPane.getChildren().add(line);
+//    }
+//
+ **/
 
     public void drawNode(Node node) {
         if(node == null)
@@ -187,48 +196,6 @@ public class TrafficMapController {
         Circle circle = new Circle(node.getX(), node.getY(), 2);
         circle.setStroke(Color.web("#b7b7b7"));
         centerAnchorPane.getChildren().add(circle);
-    }
-
-    public void drawCar(Node node, String color, String nodeType){
-        Circle circle = new Circle(node.getX(), node.getY(), 5);
-        if(nodeType.equals("start"))
-            circle.setStroke(Color.web("#00ff00"));
-        else if(nodeType.equals("end"))
-            circle.setStroke(Color.web("#ff0000"));
-        else
-            circle.setStroke(Color.web(color));
-
-        circle.fillProperty().setValue(Color.web(color));
-        centerAnchorPane.getChildren().add(circle);
-    }
-
-    public void mapEdgesListener() {
-        centerAnchorPane.setOnMouseClicked(event -> {
-            clickCount++;
-            Node temp = new Node(event.getX(), event.getY());
-            Node closest = nodes.get(0);
-            for(Node node : nodes) {
-                if(node.distanceTo(temp) < closest.distanceTo(temp))
-                    closest = node;
-            }
-            if(clickCount % 2 == 1) {
-                node1 = closest;
-            }
-            else {
-                node2 = closest;
-                System.out.println("Edge added: " + node1 + " " + node2);
-                edges.add(new Line(node1.getX(), node1.getY(), node2.getX(), node2.getY()));
-                drawEdge(node1, node2);
-            }
-        });
-    }
-
-    public void drawEdge(Node A, Node B) {
-        if(A == null || B == null)
-            return;
-        Line line = new Line(A.getX(), A.getY(), B.getX(), B.getY());
-        line.setStroke(Color.web("#b7b7b7"));
-        centerAnchorPane.getChildren().add(line);
     }
 
     public List<Node> getNodes() {
@@ -255,9 +222,9 @@ public class TrafficMapController {
     public void setTrafficMap(TrafficMap trafficMap) {
         this.trafficMap = trafficMap;
     }
-    private Map<Car, ImageView> carImageViewMap = new HashMap<>();
+    private final Map<Car, ImageView> carImageViewMap = new HashMap<>();
     public void moveCar(Car car, List<Node> path) {
-        Task<Void> task = new Task<Void>() {
+        Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 CountDownLatch latch = new CountDownLatch(path.size());
@@ -285,7 +252,7 @@ public class TrafficMapController {
                 for (int i = 1; i < path.size(); i++) {
                     Node previousNode = path.get(i - 1);
                     Node currentNode = path.get(i);
-                    Thread.sleep(200);
+                    Thread.sleep(200 / (long) trafficMap.getSpeed());
 
                     synchronized (currentNode) {
                         long start = System.currentTimeMillis();
@@ -295,6 +262,9 @@ public class TrafficMapController {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+                        }
+                        if (currentNode.getIsSign() == 1) {
+                            Thread.sleep(1000 / (long) trafficMap.getSpeed());
                         }
 
                         long end = System.currentTimeMillis();
@@ -330,7 +300,8 @@ public class TrafficMapController {
                         }
 
 
-                        if(currentNode.equals(car.getDestination())) {
+                        if (currentNode.equals(car.getDestination())) {
+
                             synchronized (currentNode) {
                                 currentNode.setOccupied(false);
                                 currentNode.notifyAll();
@@ -340,9 +311,10 @@ public class TrafficMapController {
                                 centerAnchorPane.getChildren().remove(imageView1);
                                 carImageViewMap.remove(car);
                             });
+                            trafficMap.getSimulation().removeCar(car);
                             cancel();
                             long endTime = System.currentTimeMillis();
-                            car.setArrived(true);
+                            car.setArrived();
                             car.setRunningTime(endTime - startTime);
                         }
                         latch.countDown();
@@ -393,6 +365,4 @@ public class TrafficMapController {
             trafficLightCircles.put(trafficLight, newCircle);
         });
     }
-
-
 }

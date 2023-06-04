@@ -11,9 +11,7 @@ import java.util.Random;
 
 public class Car extends Thread {
     private TrafficMapController trafficMapController;
-    private final String name;
     private Node start;
-    private Node current;
     private final Node destination;
     private List<Node> path;
     private long runningTime;
@@ -23,8 +21,7 @@ public class Car extends Thread {
     private final String color;
     private ImageView carImageView;
 
-    public Car(String name, Node start, Node destination) {
-        this.name = name;
+    public Car(Node start, Node destination) {
         this.start = start;
         this.destination = destination;
         StringBuilder hex = new StringBuilder("#");
@@ -47,24 +44,14 @@ public class Car extends Thread {
         ColorAdjust colorAdjust = new ColorAdjust();
         Random random = new Random();
         int randomCar = random.nextInt(5);
-        Image image = null;
-        switch (randomCar) {
-            case 0:
-                image = new Image(Objects.requireNonNull(getClass().getResource("/cars/tesla.png")).toString());
-                break;
-            case 1:
-                image = new Image(Objects.requireNonNull(getClass().getResource("/cars/taxi.png")).toString());
-                break;
-            case 2:
-                image = new Image(Objects.requireNonNull(getClass().getResource("/cars/jeep.png")).toString());
-                break;
-            case 3:
-                image = new Image(Objects.requireNonNull(getClass().getResource("/cars/bus.png")).toString());
-                break;
-            case 4:
-                image = new Image(Objects.requireNonNull(getClass().getResource("/cars/truck.png")).toString());
-                break;
-        }
+        Image image = switch (randomCar) {
+            case 0 -> new Image(Objects.requireNonNull(getClass().getResource("/cars/tesla.png")).toString());
+            case 1 -> new Image(Objects.requireNonNull(getClass().getResource("/cars/taxi.png")).toString());
+            case 2 -> new Image(Objects.requireNonNull(getClass().getResource("/cars/jeep.png")).toString());
+            case 3 -> new Image(Objects.requireNonNull(getClass().getResource("/cars/bus.png")).toString());
+            case 4 -> new Image(Objects.requireNonNull(getClass().getResource("/cars/truck.png")).toString());
+            default -> null;
+        };
         carImageView = new ImageView(image);
 
         double hue = random.nextDouble() * 2 - 1; // Range from -1 to 1
@@ -88,10 +75,6 @@ public class Car extends Thread {
         trafficMapController.moveCar(this, path);
     }
 
-    public void setCurrent(Node current){
-        this.current = current;
-        System.out.println("Current: " + current);
-    }
     public void setPath(List<Node> path){
         this.path = path;
     }
@@ -122,7 +105,7 @@ public class Car extends Thread {
     public void setStart(Node start) { this.start = start; }
     public String getColor() { return color; }
     public Node getDestination() { return destination; }
-    public void setArrived(boolean b) {
+    public void setArrived() {
         this.arrived = true;
     }
     public boolean isArrived() {

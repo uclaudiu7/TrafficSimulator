@@ -52,19 +52,13 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="142.0" prefHeight="43.0" prefWidth="250.0" text="Traffic intensity:" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="142.0" prefHeight="43.0" prefWidth="250.0" text="Traffic Speed" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="184.0" prefHeight="43.0" prefWidth="250.0" text="Hazard probability:" textFill="WHITE">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Slider fx:id="intensitySlider" layoutX="403.0" layoutY="147.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="33.0" prefWidth="200.0" showTickLabels="true" />
+            <Slider fx:id="intensitySlider" blockIncrement="1.0" layoutX="403.0" layoutY="147.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="33.0" prefWidth="200.0" showTickLabels="true" />
             <Spinner fx:id="carsSpinner" editable="true" layoutX="404.0" layoutY="107.0" prefHeight="26.0" prefWidth="200.0" />
-            <Slider fx:id="hazardSlider" layoutX="403.0" layoutY="190.0" majorTickUnit="10.0" minorTickCount="1" prefHeight="33.0" prefWidth="200.0" showTickLabels="true" />
             <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" layoutX="297.0" layoutY="288.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="51.0" prefWidth="203.0" style="-fx-background-color: #444444;" text="Start Simulation" textFill="WHITE">
                <font>
                   <Font size="24.0" />

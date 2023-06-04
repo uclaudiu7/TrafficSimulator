@@ -17,40 +17,29 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label fx:id="zoneLabel" layoutX="354.0" layoutY="11.0" prefHeight="18.0" prefWidth="180.0" text="Zone:" textFill="WHITE" />
-            <Label fx:id="carsLabel" layoutX="274.0" layoutY="11.0" prefHeight="18.0" prefWidth="80.0" text="Cars:" textFill="WHITE" />
-            <Label fx:id="intensityLabel" layoutX="174.0" layoutY="11.0" prefHeight="18.0" prefWidth="100.0" text="Intensity:" textFill="WHITE" />
-            <Label fx:id="hazardLabel" layoutX="14.0" layoutY="11.0" prefHeight="18.0" prefWidth="160.0" text="Hazard Probability:" textFill="WHITE" />
+            <Label fx:id="zoneLabel" layoutX="191.0" layoutY="11.0" prefHeight="18.0" prefWidth="180.0" text="Zone:" textFill="WHITE" />
+            <Label fx:id="carsLabel" layoutX="98.0" layoutY="11.0" prefHeight="18.0" prefWidth="80.0" text="Cars:" textFill="WHITE" />
+            <Label fx:id="intensityLabel" layoutX="11.0" layoutY="11.0" prefHeight="18.0" prefWidth="100.0" text="Speed:" textFill="WHITE" />
          </children>
       </AnchorPane>
    </top>
    <bottom>
       <AnchorPane fx:id="bottomAnchorPane" prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: #2b2b2b;" BorderPane.alignment="CENTER">
          <children>
-            <ToggleButton fx:id="stopButton" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #444444;" text="Stop Simulation" textFill="WHITE">
+            <ToggleButton fx:id="stopButton" layoutX="235.0" layoutY="5.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #444444;" text="Stop Simulation" textFill="WHITE">
                <effect>
                   <DropShadow />
                </effect></ToggleButton>
-            <Button fx:id="oneSpeedButton" layoutX="480.0" layoutY="6.0" mnemonicParsing="false" onAction="#oneSpeedButtonAction" style="-fx-background-color: #444444;" text="1x" textFill="WHITE">
+            <Button fx:id="loadButton" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onAction="#loadButtonAction" style="-fx-background-color: #444444;" text="Load Graph" textFill="WHITE">
                <effect>
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="twoSpeedButton" layoutX="520.0" layoutY="6.0" mnemonicParsing="false" onAction="#twoSpeedButtonAction" style="-fx-background-color: #444444;" text="2x" textFill="WHITE">
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
-            <Button fx:id="fiveSpeedButton" layoutX="560.0" layoutY="6.0" mnemonicParsing="false" onAction="#fiveSpeedButtonAction" style="-fx-background-color: #444444;" text="5x" textFill="WHITE">
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
-            <Button fx:id="loadButton" layoutX="155.0" layoutY="6.0" mnemonicParsing="false" onAction="#loadButtonAction" style="-fx-background-color: #444444;" text="Load Graph" textFill="WHITE">
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
+            <Label fx:id="poweredLabel" layoutX="390.0" layoutY="10.0" prefHeight="18.0" prefWidth="196.0" text="Powered by Ursescu Claudiu &amp; Radu Robert" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </bottom>

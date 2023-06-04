@@ -5,14 +5,12 @@ import java.util.*;
 public class Graph {
     private List<Node> nodes;
     private final List<Edge> edges;
-    private List<Car> cars;
     private final int[][] map;
     private final Object lock;
 
-    public Graph(List<Node> nodes, List<Edge> edges, List<Car> cars) {
+    public Graph(List<Node> nodes, List<Edge> edges) {
         this.nodes = nodes;
         this.edges = edges;
-        this.cars = cars;
         this.map = new int[nodes.size()][nodes.size()];
         this.lock = new Object();
         createGraph();
@@ -73,16 +71,5 @@ public class Graph {
         }
         path.addFirst(source);
         return path;
-    }
-
-    public void printGraph() {
-        synchronized (lock) {
-            for (int i = 0; i < nodes.size(); i++) {
-                for (int j = 0; j < nodes.size(); j++) {
-                    System.out.print(map[i][j] + " ");
-                }
-                System.out.println();
-            }
-        }
     }
 }

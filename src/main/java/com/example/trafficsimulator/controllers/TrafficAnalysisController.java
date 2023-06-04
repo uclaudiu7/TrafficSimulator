@@ -50,6 +50,7 @@ public class TrafficAnalysisController {
     public void exitButtonAction() {
         Stage stage = (Stage) topAnchorPane.getScene().getWindow();
         stage.close();
+        System.exit(0);
     }
 
 }

@@ -7,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class MainMenuController {
         @FXML
@@ -23,9 +22,6 @@ public class MainMenuController {
         private Slider intensitySlider;
 
         @FXML
-        private Slider hazardSlider;
-
-        @FXML
         private Button startButton;
 
         @FXML
@@ -37,13 +33,13 @@ public class MainMenuController {
                 zoneChoiceBox.getSelectionModel().selectFirst();
 
                 // Set default value for carsSpinner, and set a min and max value
-                carsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 1));
+                carsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 200, 1));
+                intensitySlider.setMin(1);
+                intensitySlider.setMax(5);
+                intensitySlider.setValue(1);
 
                 // Set default value for intensitySlider, and add a listener to update the value on drag
                 intensitySlider.setOnMouseDragged(e -> intensitySlider.setValue((int) intensitySlider.getValue()));
-
-                // Set default value for hazardSlider, and add a listener to update the value on drag
-                hazardSlider.setOnMouseDragged(e -> hazardSlider.setValue((int) hazardSlider.getValue()));
 
                 // Set up the custom window move functionality
                 topAnchorPane.setOnMousePressed(e -> topAnchorPane.setOnMouseDragged(e2 -> {
@@ -57,12 +53,13 @@ public class MainMenuController {
         public void exitButtonAction() {
                 Stage stage = (Stage) exitButton.getScene().getWindow();
                 stage.close();
+                System.exit(0);
         }
 
         public void startButtonAction() throws IOException {
                 Stage stage = (Stage) startButton.getScene().getWindow();
                 stage.close();
-                TrafficMap trafficMap = new TrafficMap(stage, zoneChoiceBox.getValue(), carsSpinner.getValue(), intensitySlider.getValue(), hazardSlider.getValue());
+                TrafficMap trafficMap = new TrafficMap(stage, zoneChoiceBox.getValue(), carsSpinner.getValue(), intensitySlider.getValue());
                 trafficMap.show();
                 trafficMap.beginSimulation();
         }

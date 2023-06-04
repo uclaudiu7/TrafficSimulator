@@ -17,61 +17,63 @@ public class DatabaseManager {
         try {
             String url = "jdbc:mysql://localhost:/traffic_simulator";
             String user = "root";
-            String password = null;
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection(url, user, null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void insertNodes(Vector<Node> nodes, String zone) {
-        String sql = null;
-        if(zone.equals("UAIC Corp C")) {
-            sql = "INSERT INTO nodes_uaic (x, y) VALUES (?, ?)";
-        } else if (zone.equals("Pasarela Octav Bancila")) {
-            sql = "INSERT INTO nodes_pasarela (x, y) VALUES (?, ?)";
-        } else {
-            sql = "INSERT INTO nodes_eminescu (x, y) VALUES (?, ?)";
-        }
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            for (Node node : nodes) {
-                pstmt.setDouble(1, node.getX());
-                pstmt.setDouble(2, node.getY());
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void insertEdges(Vector<Line> edges, String zone) {
-        String sql = null;
-        if(zone.equals("UAIC Corp C")) {
-            sql = "INSERT INTO edges_uaic (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
-        } else if (zone.equals("Pasarela Octav Bancila")) {
-            sql = "INSERT INTO edges_pasarela (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
-        } else {
-            sql = "INSERT INTO edges_eminescu (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
-        }
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            for (Line edge : edges) {
-                pstmt.setDouble(1, edge.getStartX());
-                pstmt.setDouble(2, edge.getStartY());
-                pstmt.setDouble(3, edge.getEndX());
-                pstmt.setDouble(4, edge.getEndY());
-
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+/**          Code used for graph insertion
+//
+//    public void insertNodes(Vector<Node> nodes, String zone) {
+//        String sql = null;
+//        if(zone.equals("UAIC Corp C")) {
+//            sql = "INSERT INTO nodes_uaic (x, y) VALUES (?, ?)";
+//        } else if (zone.equals("Pasarela Octav Bancila")) {
+//            sql = "INSERT INTO nodes_pasarela (x, y) VALUES (?, ?)";
+//        } else {
+//            sql = "INSERT INTO nodes_eminescu (x, y) VALUES (?, ?)";
+//        }
+//        try {
+//            PreparedStatement pstmt = conn.prepareStatement(sql);
+//            for (Node node : nodes) {
+//                pstmt.setDouble(1, node.getX());
+//                pstmt.setDouble(2, node.getY());
+//                pstmt.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    public void insertEdges(Vector<Line> edges, String zone) {
+//        String sql = null;
+//        if(zone.equals("UAIC Corp C")) {
+//            sql = "INSERT INTO edges_uaic (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
+//        } else if (zone.equals("Pasarela Octav Bancila")) {
+//            sql = "INSERT INTO edges_pasarela (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
+//        } else {
+//            sql = "INSERT INTO edges_eminescu (x1, y1, x2, y2) VALUES (?, ?, ?, ?)";
+//        }
+//        try {
+//            PreparedStatement pstmt = conn.prepareStatement(sql);
+//            for (Line edge : edges) {
+//                pstmt.setDouble(1, edge.getStartX());
+//                pstmt.setDouble(2, edge.getStartY());
+//                pstmt.setDouble(3, edge.getEndX());
+//                pstmt.setDouble(4, edge.getEndY());
+//
+//                pstmt.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+/**/
 
     public Vector<Line> loadEdges(String zone){
         Vector<Line> edges = new Vector<>();
-        String sql = null;
+        String sql;
         if(zone.equals("UAIC Corp C")) {
             sql = "SELECT * FROM edges_uaic";
         } else if (zone.equals("Pasarela Octav Bancila")) {
@@ -181,6 +183,30 @@ public class DatabaseManager {
         }
 
         return trafficLights;
+    }
+
+    public List<Node> loadSigns(String zone) {
+        List<Node> signs = new ArrayList<>();
+        String sql;
+        if(zone.equals("UAIC Corp C")) {
+            sql = "SELECT * FROM nodes_uaic where is_sign = 1";
+        } else if (zone.equals("Pasarela Octav Bancila")) {
+            sql = "SELECT * FROM nodes_pasarela where is_sign = 1";
+        } else {
+            sql = "SELECT * FROM nodes_eminescu where is_sign = 1";
+        }
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+            while(pstmt.getResultSet().next()){
+                Node node = new Node(pstmt.getResultSet().getDouble("x"), pstmt.getResultSet().getDouble("y"));
+                signs.add(node);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return signs;
     }
 
 }
